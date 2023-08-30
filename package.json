@@ -33,6 +33,7 @@
 	"type": "module",
 	"dependencies": {
 		"@solana/web3.js": "^1.78.4",
-		"@vercel/kv": "^0.2.2"
+		"@supabase/auth-helpers-sveltekit": "^0.10.2",
+		"@supabase/supabase-js": "^2.33.1"
 	}
 }
