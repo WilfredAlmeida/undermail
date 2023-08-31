@@ -1,6 +1,12 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as Popover from '$lib/components/ui/popover';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import {
+		LogOut,
+		Settings,
+		User,
+	} from 'lucide-svelte';
 </script>
 
 <nav class="bg-white border-gray-200 dark:bg-gray-900">
@@ -12,44 +18,31 @@
 			>
 		</a>
 
-		<Popover.Root>
-			<Popover.Trigger>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
 				<Avatar.Root>
 					<Avatar.Image src="https://github.com/shadcn.png" alt="user" />
 					<Avatar.Fallback>CN</Avatar.Fallback>
 				</Avatar.Root>
-			</Popover.Trigger>
-			<Popover.Content>
-				<div>
-					<div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-						<div>Bonnie Green</div>
-						<div class="font-medium truncate">name@flowbite.com</div>
-					</div>
-					<ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
-						<li>
-							<a
-								href="#"
-								class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-								>Profile</a
-							>
-						</li>
-						<li>
-							<a
-								href="#"
-								class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-								>Settings</a
-							>
-						</li>
-					</ul>
-					<div class="py-1">
-						<a
-							href="#"
-							class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-							>Logout</a
-						>
-					</div>
-				</div>
-			</Popover.Content>
-		</Popover.Root>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content>
+				<DropdownMenu.Group>
+					<DropdownMenu.Label>My Account</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+					<DropdownMenu.Item>
+						<User class="mr-2 h-4 w-4" />
+						<span>Profile</span>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item>
+						<Settings class="mr-2 h-4 w-4" />
+						<span>Settings</span>
+					</DropdownMenu.Item>
+					<DropdownMenu.Item>
+						<LogOut class="mr-2 h-4 w-4" />
+						<span>Log out</span>
+					</DropdownMenu.Item>
+				</DropdownMenu.Group>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	</div>
 </nav>
