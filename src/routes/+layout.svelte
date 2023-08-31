@@ -1,5 +1,7 @@
-<script>
+<script lang="ts">
 	import '../app.css';
+	import Navbar from "$components/navbar/navbar.svelte";
+	// export let navbar
 
 	// Supabase Config
 	import { invalidate } from '$app/navigation';
@@ -22,5 +24,7 @@
 		return () => subscription.unsubscribe();
 	});
 </script>
+
+<Navbar/>
 
 <slot />
