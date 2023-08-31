@@ -1,4 +1,6 @@
 <script>
+
+import { Button } from "$lib/components/ui/button";
     
     // Sample data for user projects
     const userProjects = [
@@ -17,13 +19,14 @@
     <!-- Heading -->
     <h1 class="text-3xl font-semibold mb-6 text-white">Projects</h1>
     
-    <!-- Create Project Button (Top Right) -->
+    <!-- Create Project Button (Top Right)
     <button
       class="absolute top-4 right-4 bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600"
       on:click={createProject}
     >
       Create Project
-    </button>
+    </button> -->
+    <Button variant="default" class="absolute top-4 right-8 px-4 py-2 bg-green-400">Button</Button>
     
     <!-- List of user projects -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
