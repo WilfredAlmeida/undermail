@@ -1,38 +1,36 @@
 <!doctype html>
 <html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		%sveltekit.head%
 
-<head>
-	<meta charset="utf-8" />
-	<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
-	<meta name="viewport" content="width=device-width" />
-	%sveltekit.head%
+		<title>NftChimp</title>
+	</head>
 
-	<title>NftChimp</title>
-</head>
+	<body data-sveltekit-preload-data="hover" class="bg-custom-image">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+	<style>
+		.bg-custom-image {
+			background-image: url('%sveltekit.assets%/bg.gif');
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			height: 100vh;
+		}
 
-<body data-sveltekit-preload-data="hover" class="bg-custom-image">
-	<div style="display: contents">%sveltekit.body%</div>
-</body>
-<style>
-	.bg-custom-image {
-		background-image: url('%sveltekit.assets%/bg.gif');
-		background-size: cover;
-		background-position: center;
-		background-repeat: no-repeat;
-		height: 100vh;
-	}
-
-	.bg-custom-image::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background-image: inherit;
-		background-size: cover;
-		background-position: inherit;
-		background-repeat: inherit;
-		filter: blur(5px);
-		z-index: -3;
-	}
-</style>
-
+		.bg-custom-image::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background-image: inherit;
+			background-size: cover;
+			background-position: inherit;
+			background-repeat: inherit;
+			filter: blur(5px);
+			z-index: -3;
+		}
+	</style>
 </html>
