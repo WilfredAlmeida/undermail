@@ -27,12 +27,12 @@
 
 <div class="flex h-screen shadow-lg">
 	<div
-		class="w-16 bg-white p-4 shadow-md border-r-2 border-green-400 flex flex-col justify-start items-center"
+		class="w-16 p-4 shadow-md border-r-2 border-animation flex flex-col justify-start items-center"
 	>
 		{#each paneItems as item (item.itemId)}
 			<Tooltip.Root>
 				<Tooltip.Trigger>
-					<Button variant="ghost">
+					<Button variant="ghost" class="text-green-400">
 						<svelte:component this={item.icon} />
 					</Button>
 				</Tooltip.Trigger>

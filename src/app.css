@@ -76,3 +76,29 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@keyframes gradientAnimation {
+	0% {
+		border-image-source: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+	}
+	25% {
+		border-image-source: linear-gradient(45deg, #00ff00, #0000ff, #ff0000);
+	}
+	50% {
+		border-image-source: linear-gradient(45deg, #0000ff, #ff0000, #00ff00);
+	}
+	75% {
+		border-image-source: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+	}
+	100% {
+		border-image-source: linear-gradient(45deg, #00ff00, #0000ff, #ff0000);
+	}
+}
+
+.border-animation {
+	background-color: #000;
+	animation: gradientAnimation 5s linear infinite;
+	border-bottom: 1px solid;
+	border-image-slice: 1;
+	border-image-source: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+}
