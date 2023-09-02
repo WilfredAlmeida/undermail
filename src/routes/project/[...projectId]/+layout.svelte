@@ -25,9 +25,9 @@
 	];
 </script>
 
-<div class="flex h-screen shadow-lg">
+<div class="flex h-screen w-screen shadow-lg">
 	<div
-		class="w-16 p-4 shadow-md border-r-2 border-animation flex flex-col justify-start items-center"
+		class="w-16 p-6 shadow-md border-r-2 border-animation flex flex-col justify-start items-center"
 	>
 		{#each paneItems as item (item.itemId)}
 			<Tooltip.Root>
@@ -42,6 +42,7 @@
 			</Tooltip.Root>
 		{/each}
 	</div>
+	<div class="flex-grow h-screen w-screen p-0 m-0">
+	<slot/>
 </div>
-
-<slot />
+</div>

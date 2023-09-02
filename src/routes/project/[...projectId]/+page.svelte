@@ -9,4 +9,4 @@
 
 </script>
 
-<h2>For ${projectId}</h2>
+<h2 class="text-white">For ${projectId}</h2>
