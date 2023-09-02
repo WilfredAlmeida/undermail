@@ -23,8 +23,6 @@
 </script>
 
 <main class="p-8">
-	<!-- Heading -->
-	<h1 class="text-3xl font-semibold mb-6 text-white">Projects</h1>
 
 	<div class="flex justify-end">
 		<AlertDialog.Root open={showDialog}>
@@ -82,7 +80,7 @@
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
 		{#each userProjects as project (project.id)}
 			<a
-				href="#"
+				href="/project/{project.id}"
 				class="block max-w-sm p-6 h-40 bg-white border border-green-400 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
 			>
 				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
