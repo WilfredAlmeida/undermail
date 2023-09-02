@@ -15,7 +15,10 @@
 	// Function to create a new project
 	const createProject = () => {
 		// userProjects.push({ id: 4, title: 'Project 4', description: 'Description of Project 4' })
-		userProjects = [...userProjects, { id: 4, title: 'Project 4', description: 'Description of Project 4' }]
+		userProjects = [
+			...userProjects,
+			{ id: 4, title: 'Project 4', description: 'Description of Project 4' }
+		];
 		console.log(userProjects);
 
 		showDialog = false;
@@ -23,7 +26,6 @@
 </script>
 
 <main class="p-8">
-
 	<div class="flex justify-end">
 		<AlertDialog.Root open={showDialog}>
 			<AlertDialog.Trigger asChild let:builder>
@@ -77,16 +79,21 @@
 	</div>
 
 	<!-- List of user projects -->
+
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
 		{#each userProjects as project (project.id)}
 			<a
 				href="/project/{project.id}"
-				class="block max-w-sm p-6 h-40 bg-white border border-green-400 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+				class="relative block max-w-sm p-6 h-40 rounded-lg hover:opacity-80 hover:shadow-lg"
 			>
-				<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-					{project.title}
-				</h5>
-				<p class="font-normal text-gray-700 dark:text-gray-400">{project.description}</p>
+				<div
+					class="p-6 absolute inset-0 bg-opacity-20 backdrop-blur-lg bg-green-400 border border-green-400 rounded-lg"
+				>
+					<h5 class="mb-2 text-2xl font-bold tracking-tight text-white dark:text-white">
+						{project.title}
+					</h5>
+					<p class="pt-5 font-normal text-white dark:text-gray-400">{project.description}</p>
+				</div>
 			</a>
 		{/each}
 	</div>

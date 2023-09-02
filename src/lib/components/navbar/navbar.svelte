@@ -2,14 +2,10 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as Popover from '$lib/components/ui/popover';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import {
-		LogOut,
-		Settings,
-		User,
-	} from 'lucide-svelte';
+	import { LogOut, Settings, User } from 'lucide-svelte';
 </script>
 
-<nav class="bg-white border-gray-200 dark:bg-gray-900">
+<nav class="bg-gray-900 shadow-lg border-animation">
 	<div class="max-w-screen-xl flex flex-wrap justify-between mx-auto p-4">
 		<a href="/" class="flex items-center">
 			<img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
@@ -46,3 +42,31 @@
 		</DropdownMenu.Root>
 	</div>
 </nav>
+<!-- 
+<style>
+	@keyframes gradientAnimation {
+		0% {
+			border-image-source: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+		}
+		25% {
+			border-image-source: linear-gradient(45deg, #00ff00, #0000ff, #ff0000);
+		}
+		50% {
+			border-image-source: linear-gradient(45deg, #0000ff, #ff0000, #00ff00);
+		}
+		75% {
+			border-image-source: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+		}
+		100% {
+			border-image-source: linear-gradient(45deg, #00ff00, #0000ff, #ff0000);
+		}
+	}
+
+	nav {
+		background-color: #000;
+		animation: gradientAnimation 5s linear infinite;
+		border-bottom: 1px solid;
+		border-image-slice: 1;
+		border-image-source: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+	}
+</style> -->
