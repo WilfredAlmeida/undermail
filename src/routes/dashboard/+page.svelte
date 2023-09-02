@@ -12,9 +12,9 @@
 		{ id: 3, title: 'Project 3', description: 'Description of Project 3' }
 	];
 	let showDialog = false;
-	// Function to create a new project
+	
 	const createProject = () => {
-		// userProjects.push({ id: 4, title: 'Project 4', description: 'Description of Project 4' })
+
 		userProjects = [
 			...userProjects,
 			{ id: 4, title: 'Project 4', description: 'Description of Project 4' }
@@ -31,23 +31,23 @@
 			<AlertDialog.Trigger asChild let:builder>
 				<Button
 					builders={[builder]}
-					variant="default"
-					class="top-4 right-8 px-4 py-2 bg-green-400"
+					variant="ghost"
+					class="top-4 right-8 px-4 py-2 hover:bg-green-400 hover:text-black text-white border-green-400 border-b-2 border-t-2"
 					on:click={() => (showDialog = true)}>Create Project</Button
 				>
 			</AlertDialog.Trigger>
-			<AlertDialog.Content>
+			<AlertDialog.Content class="bg-opacity-20 backdrop-blur-lg bg-green-40">
 				<AlertDialog.Header>
 					<!-- <AlertDialog.Title>Create a new Project</AlertDialog.Title> -->
 					<AlertDialog.Description>
-						<Card.Root class="">
+						<Card.Root class="bg-opacity-20 backdrop-blur-lg bg-green-40">
 							<Card.Header>
-								<Card.Title>Create project</Card.Title>
-								<Card.Description>Create your new project in one-click.</Card.Description>
+								<Card.Title class="text-white">Create project</Card.Title>
+								<Card.Description class="text-green-400">Create your new project in one-click.</Card.Description>
 							</Card.Header>
 							<Card.Content>
 								<form>
-									<div class="grid w-full items-center gap-4">
+									<div class="grid w-full items-center gap-4 text-white">
 										<div class="flex flex-col space-y-1.5">
 											<Label for="name">Name</Label>
 											<Input id="name" placeholder="Name of your project" />
@@ -60,9 +60,8 @@
 								</form>
 							</Card.Content>
 							<Card.Footer class="flex justify-between">
-								<Button variant="outline" on:click={() => (showDialog = false)}>Cancel</Button>
-								<Button variant="default" class="bg-green-400" on:click={createProject}
-									>Deploy</Button
+								<Button variant="ghost" class="text-white hover:text-black" on:click={() => (showDialog = false)}>Cancel</Button>
+								<Button variant="default" class="bg-green-400 hover:bg-green-400 hover:text-black" on:click={createProject}>Create</Button
 								>
 							</Card.Footer>
 						</Card.Root>
