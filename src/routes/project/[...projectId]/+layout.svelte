@@ -1,5 +1,5 @@
 <script>
-	import { Home, Send, History } from 'lucide-svelte';
+	import { Home, Send, History, Settings } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 
@@ -21,11 +21,17 @@
 			icon: History,
 			hoverText: 'Mint History',
 			action: null
+		},
+		{
+			itemId: 3,
+			icon: Settings,
+			hoverText: 'Project Settings',
+			action: null
 		}
 	];
 </script>
 
-<div class="flex h-screen w-screen shadow-lg">
+<div class="flex h-screen shadow-lg">
 	<div
 		class="w-16 p-6 shadow-md border-r-2 border-animation flex flex-col justify-start items-center"
 	>
@@ -42,7 +48,7 @@
 			</Tooltip.Root>
 		{/each}
 	</div>
-	<div class="flex-grow h-screen w-screen p-0 m-0">
+	<div class="">
 	<slot/>
 </div>
 </div>
