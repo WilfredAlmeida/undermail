@@ -3,6 +3,14 @@
 	import * as Popover from '$lib/components/ui/popover';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { LogOut, Settings, User } from 'lucide-svelte';
+	import { page } from '$app/stores';
+	import { redirect } from '@sveltejs/kit';
+
+	const logOut = async()=>{
+		const {error} = await $page.data.supabase.auth.signOut();
+		redirect(303, "/login");
+	}
+
 </script>
 
 <nav class="bg-gray-900 shadow-lg border-animation">
@@ -33,7 +41,7 @@
 						<Settings class="mr-2 h-4 w-4" />
 						<span>Settings</span>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item>
+					<DropdownMenu.Item on:click={logOut}>
 						<LogOut class="mr-2 h-4 w-4" />
 						<span>Log out</span>
 					</DropdownMenu.Item>
