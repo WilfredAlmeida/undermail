@@ -8,8 +8,14 @@
 
 	// Function to handle Google login
 	const handleGoogleLogin = async () => {
+
+		try{
+
 		const { data: mdata, error: err } = await supabase.auth.signInWithOAuth({
-			provider: 'google'
+			provider: 'google',
+			options:{
+				redirectTo: "http://localhost:5173/dashboard"
+			}
 		});
 
 		if (err) {
@@ -18,6 +24,13 @@
 				message: 'Something went wrong'
 			});
 		}
+		console.log(mdata);
+		
+		redirect(303, mdata.url)
+	}catch(err){
+		console.log(err);
+		
+	}
 
 	};
 </script>
