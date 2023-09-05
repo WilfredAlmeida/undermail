@@ -34,7 +34,7 @@
 	});
 </script>
 
-<div class="min-h-screen flex items-center justify-center">
+<div class="flex items-center justify-center">
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto w-full max-w-screen-lg p-8">
 		{#each items as item (item)}
 			<Card.Root class="bg-opacity-20 backdrop-blur-lg bg-green-40 h-120">
