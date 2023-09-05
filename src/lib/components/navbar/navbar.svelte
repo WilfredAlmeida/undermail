@@ -21,7 +21,7 @@
 					<Avatar.Fallback>CN</Avatar.Fallback>
 				</Avatar.Root>
 			</DropdownMenu.Trigger>
-			<DropdownMenu.Content>
+			<DropdownMenu.Content class="bg-opacity-20 backdrop-blur-lg bg-green-400 text-white">
 				<DropdownMenu.Group>
 					<DropdownMenu.Label>My Account</DropdownMenu.Label>
 					<DropdownMenu.Separator />
