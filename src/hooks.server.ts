@@ -22,14 +22,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		return session;
 	};
 
-	if (event.url.pathname.startsWith('/protected')) {
+	if (event.url.pathname.startsWith('/(private)')) {
 		const session = await event.locals.getSession();
-		console.log("SESSION");
+		console.log("SESSION in hooks");
 		console.log(session);
 		
 		if (!session) {
 			// the user is not signed in
-			throw redirect(303, '/login');
+			throw redirect(307, '/login');
 		}
 	}
 

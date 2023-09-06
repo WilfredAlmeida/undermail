@@ -5,10 +5,16 @@
 	import { LogOut, Settings, User } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { redirect } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
+	
 
 	const logOut = async()=>{
-		const {error} = await $page.data.supabase.auth.signOut();
-		redirect(303, "/login");
+		// const {error} = await $page.data.supabase.auth.signOut();
+		// console.log("LOGOUT ERROR");
+		// console.log(error);
+		
+		goto("/auth/logout")
+	
 	}
 
 </script>
