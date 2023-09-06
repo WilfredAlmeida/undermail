@@ -14,7 +14,7 @@
 		const { data: mdata, error: err } = await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options:{
-				redirectTo: "http://localhost:5173/dashboard"
+				redirectTo: `${location.origin}/auth/cb`
 			}
 		});
 
