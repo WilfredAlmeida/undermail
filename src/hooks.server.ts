@@ -26,7 +26,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const session = await event.locals.getSession();
 		// console.log("SESSION in hooks");
 		// console.log(session);
-		
+
 		if (!session) {
 			// the user is not signed in
 			throw redirect(307, '/login');
