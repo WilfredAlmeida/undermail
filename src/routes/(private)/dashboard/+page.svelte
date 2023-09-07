@@ -5,8 +5,10 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { enhance } from '$app/forms';
+	// @ts-ignore
 	export let form;
 
+	// @ts-ignore
 	let errorMessage = null
 
 	// Sample data for user projects
@@ -35,14 +37,16 @@
             var fileInput =
                 document.getElementById('image');
              
+            // @ts-ignore
             var filePath = fileInput?.value;
          
             // Allowing file type
             var allowedExtensions =
-                    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+                    /(\.jpg|\.jpeg)$/i;
              
             if (!allowedExtensions.exec(filePath)) {
-                alert('Invalid file type');
+                alert('Only JPG/JPEG Allowed');
+                // @ts-ignore
                 fileInput.value = '';
                 return false;
             }
@@ -59,6 +63,7 @@
 					variant="ghost"
 					class="top-4 right-8 px-4 py-2 hover:bg-green-400 hover:text-black text-white border-green-400 border-b-2 border-t-2"
 					on:click={() => {
+						/* @ts-ignore */
 						try{form.message=''} catch{}
 						showDialog = true
 					}}>Create Project</Button
@@ -83,7 +88,7 @@
 								<form method="post" action="?/createProject" id="createProjectForm" enctype="multipart/form-data" use:enhance>
 									<div class="grid w-full items-center gap-4 text-white">
 										<div class="flex flex-col space-y-1.5">
-											<Label for="name">Name</Label>
+											<Label for="name">Name <span>*</span></Label>
 											<Input id="name" name="projectName" placeholder="Name of your project" />
 										</div>
 										<div class="flex flex-col space-y-1.5">
@@ -95,7 +100,7 @@
 											/>
 										</div>
 										<div class="flex flex-col space-y-1.5">
-											<Label for="image">Image</Label>
+											<Label for="image">Image <span>*</span></Label>
 											<Input id="image" type="file" name="projectImage"  class="cursor-pointer" on:change={fileValidation} />
 										</div>
 									</div>
