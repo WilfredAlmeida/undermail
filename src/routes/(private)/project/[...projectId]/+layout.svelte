@@ -2,25 +2,31 @@
 	import { Home, Send, History, Settings } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+
+	const { projectId } = $page.params;
+	console.log("PROJECT ID");
+	console.log($page.url);
 
 	let paneItems = [
 		{
 			itemId: 0,
 			icon: Home,
 			hoverText: 'Project Home',
-			action: null
+			action: `${$page.url.href}`
 		},
 		{
 			itemId: 1,
 			icon: Send,
 			hoverText: 'Mint',
-			action: null
+			action: `${$page.url.href}/mint`
 		},
 		{
 			itemId: 2,
 			icon: History,
 			hoverText: 'Mint History',
-			action: null
+			action: `${$page.url.href}/history`
 		},
 		{
 			itemId: 3,
@@ -38,7 +44,7 @@
 		{#each paneItems as item (item.itemId)}
 			<Tooltip.Root>
 				<Tooltip.Trigger>
-					<Button variant="ghost" class="text-green-400">
+					<Button variant="ghost" class="text-green-400" on:click={()=>goto(item.action)}>
 						<svelte:component this={item.icon} />
 					</Button>
 				</Tooltip.Trigger>
