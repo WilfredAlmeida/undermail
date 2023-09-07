@@ -11,8 +11,6 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
     }
 
     const {data: {session: {user}}} = await supabase.auth.getSession();
-    console.log("SESSION IN CB");
-    console.log(user);
     
     try{
 

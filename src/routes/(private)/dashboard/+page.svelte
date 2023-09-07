@@ -4,6 +4,10 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import { enhance } from '$app/forms';
+	export let form;
+
+	let errorMessage = null
 
 	// Sample data for user projects
 	let userProjects = [
@@ -12,17 +16,38 @@
 		{ id: 3, title: 'Project 3', description: 'Description of Project 3' }
 	];
 	let showDialog = false;
-	
+
 	const createProject = () => {
+		// userProjects = [
+		// 	...userProjects,
+		// 	{ id: 4, title: 'Project 4', description: 'Description of Project 4' }
+		// ];
 
-		userProjects = [
-			...userProjects,
-			{ id: 4, title: 'Project 4', description: 'Description of Project 4' }
-		];
-		console.log(userProjects);
+		// const createProjectForm = document.getElementById('createProjectForm');
+		/* @ts-ignore */
+		// createProjectForm.preventDefault();
+		// createProjectForm?.submit();
 
-		showDialog = false;
+		// showDialog = false;
 	};
+
+	function fileValidation() {
+            var fileInput =
+                document.getElementById('image');
+             
+            var filePath = fileInput?.value;
+         
+            // Allowing file type
+            var allowedExtensions =
+                    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+             
+            if (!allowedExtensions.exec(filePath)) {
+                alert('Invalid file type');
+                fileInput.value = '';
+                return false;
+            }
+        }
+
 </script>
 
 <main class="p-8">
@@ -33,7 +58,10 @@
 					builders={[builder]}
 					variant="ghost"
 					class="top-4 right-8 px-4 py-2 hover:bg-green-400 hover:text-black text-white border-green-400 border-b-2 border-t-2"
-					on:click={() => (showDialog = true)}>Create Project</Button
+					on:click={() => {
+						try{form.message=''} catch{}
+						showDialog = true
+					}}>Create Project</Button
 				>
 			</AlertDialog.Trigger>
 			<AlertDialog.Content class="bg-opacity-20 backdrop-blur-lg bg-green-40">
@@ -43,27 +71,55 @@
 						<Card.Root class="bg-opacity-20 backdrop-blur-lg bg-green-40">
 							<Card.Header>
 								<Card.Title class="text-white">Create project</Card.Title>
-								<Card.Description class="text-green-400">Create your new project in one-click.</Card.Description>
+								{#if form?.message}
+									<Card.Description class="text-red-400 font-bold">{form.message}</Card.Description>
+								{:else}
+									<Card.Description class="text-green-400"
+										>Create your new project in one-click.</Card.Description
+									>
+								{/if}
 							</Card.Header>
 							<Card.Content>
-								<form>
+								<form method="post" action="?/createProject" id="createProjectForm" enctype="multipart/form-data" use:enhance>
 									<div class="grid w-full items-center gap-4 text-white">
 										<div class="flex flex-col space-y-1.5">
 											<Label for="name">Name</Label>
-											<Input id="name" placeholder="Name of your project" />
+											<Input id="name" name="projectName" placeholder="Name of your project" />
 										</div>
 										<div class="flex flex-col space-y-1.5">
 											<Label for="description">Description</Label>
-											<Input id="description" placeholder="One-liner Description" />
+											<Input
+												id="description"
+												name="projectDescription"
+												placeholder="One-liner Description"
+											/>
 										</div>
+										<div class="flex flex-col space-y-1.5">
+											<Label for="image">Image</Label>
+											<Input id="image" type="file" name="projectImage"  class="cursor-pointer" on:change={fileValidation} />
+										</div>
+									</div>
+									<div class="flex flex-row pt-12 justify-between">
+										<Button
+											variant="ghost"
+											class="text-white hover:text-black"
+											type="button"
+											on:click={() => showDialog = false}>Cancel</Button
+										>
+										<Button
+											variant="default"
+											class="bg-green-400 hover:bg-green-400 hover:text-black"
+											type="submit"
+											on:click={createProject}>Create</Button
+										>
 									</div>
 								</form>
 							</Card.Content>
-							<Card.Footer class="flex justify-between">
+							<!-- <Card.Footer class="flex justify-between">
 								<Button variant="ghost" class="text-white hover:text-black" on:click={() => (showDialog = false)}>Cancel</Button>
 								<Button variant="default" class="bg-green-400 hover:bg-green-400 hover:text-black" on:click={createProject}>Create</Button
 								>
-							</Card.Footer>
+							</Card.Footer> -->
 						</Card.Root>
 					</AlertDialog.Description>
 				</AlertDialog.Header>
