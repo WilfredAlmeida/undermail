@@ -24,8 +24,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (event.url.pathname.startsWith('/(private)')) {
 		const session = await event.locals.getSession();
-		console.log("SESSION in hooks");
-		console.log(session);
+		// console.log("SESSION in hooks");
+		// console.log(session);
 		
 		if (!session) {
 			// the user is not signed in

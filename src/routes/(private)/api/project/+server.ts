@@ -57,39 +57,36 @@ export const POST = async ({ request, locals }) => {
     console.log(imgUrl);
     
 
-    const res = await fetch('https://dev.underdogprotocol.com/v2/projects', {
-        method: 'POST',
-        body: JSON.stringify({
-            name: name,
-            description: description===null?'':description,
-            image: imgUrl
-        }),
-        headers: {
-            accept: 'application/json',
-            'content-type': 'application/json',
-            authorization: `Bearer ${UNDERDOG_KEY}`
-        }
-    })
+    // const res = await fetch('https://dev.underdogprotocol.com/v2/projects', {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //         name: name,
+    //         description: description===null?'':description,
+    //         image: imgUrl
+    //     }),
+    //     headers: {
+    //         accept: 'application/json',
+    //         'content-type': 'application/json',
+    //         authorization: `Bearer ${UNDERDOG_KEY}`
+    //     }
+    // })
 
-    const resJson = await res.json()
-    console.log("RES JSON");
-    console.log(resJson);
-    
-    
+    // const resJson = await res.json()
 
-    if(res.status!==202){
-        return new Response(JSON.stringify({
-            status: "UNDERDOG_PROJECT_CREATION_FAILED",
-            data: null,
-            error: [JSON.stringify(resJson)]
-        }), {
-            status: res.status,
-            headers: { 'Content-Type': 'application/json' }
-        })
-    }
+    // if(res.status!==202){
+    //     return new Response(JSON.stringify({
+    //         status: "UNDERDOG_PROJECT_CREATION_FAILED",
+    //         data: null,
+    //         error: [JSON.stringify(resJson)]
+    //     }), {
+    //         status: res.status,
+    //         headers: { 'Content-Type': 'application/json' }
+    //     })
+    // }
 
     
-    const underdogProjectId = resJson.projectId;
+    // const underdogProjectId = resJson.projectId;
+    const underdogProjectId = 4;
     const projectId = generateAlphanumericString(6);
     const { data: { user: { email } } } = await supabase.auth.getUser();
 
@@ -116,11 +113,15 @@ export const POST = async ({ request, locals }) => {
 
     const res2 = await supabase.from("projects").insert({
         id: projectId,
-        userId: userIdInDb,
+        user_id: userIdInDb,
         name: name.trim(),
         description: description,
-        underdog_id: underdogProjectId
+        underdog_id: underdogProjectId,
+        image_url: imgUrl
     })
+
+    console.log(res2);
+    
 
     return new Response(JSON.stringify({
         status: "PROJECT_CREATED",
@@ -134,7 +135,7 @@ export const POST = async ({ request, locals }) => {
 }
 
 const generateAlphanumericString = (length: number): string => {
-    const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charset = "abcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
 
     for (let i = 0; i < length; i++) {

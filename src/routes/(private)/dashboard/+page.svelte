@@ -1,4 +1,6 @@
 <script>
+	// @ts-nocheck
+
 	import { Button } from '$lib/components/ui/button';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import * as Card from '$lib/components/ui/card';
@@ -7,51 +9,30 @@
 	import { enhance } from '$app/forms';
 	// @ts-ignore
 	export let form;
+	export let data;
 
-	// @ts-ignore
-	let errorMessage = null
-
-	// Sample data for user projects
-	let userProjects = [
-		{ id: 1, title: 'Project 1', description: 'Description of Project 1' },
-		{ id: 2, title: 'Project 2', description: 'Description of Project 2' },
-		{ id: 3, title: 'Project 3', description: 'Description of Project 3' }
-	];
 	let showDialog = false;
 
 	const createProject = () => {
-		// userProjects = [
-		// 	...userProjects,
-		// 	{ id: 4, title: 'Project 4', description: 'Description of Project 4' }
-		// ];
-
-		// const createProjectForm = document.getElementById('createProjectForm');
-		/* @ts-ignore */
-		// createProjectForm.preventDefault();
-		// createProjectForm?.submit();
-
 		// showDialog = false;
 	};
 
 	function fileValidation() {
-            var fileInput =
-                document.getElementById('image');
-             
-            // @ts-ignore
-            var filePath = fileInput?.value;
-         
-            // Allowing file type
-            var allowedExtensions =
-                    /(\.jpg|\.jpeg)$/i;
-             
-            if (!allowedExtensions.exec(filePath)) {
-                alert('Only JPG/JPEG Allowed');
-                // @ts-ignore
-                fileInput.value = '';
-                return false;
-            }
-        }
+		var fileInput = document.getElementById('image');
 
+		// @ts-ignore
+		var filePath = fileInput?.value;
+
+		// Allowing file type
+		var allowedExtensions = /(\.jpg|\.jpeg)$/i;
+
+		if (!allowedExtensions.exec(filePath)) {
+			alert('Only JPG/JPEG Allowed');
+			// @ts-ignore
+			fileInput.value = '';
+			return false;
+		}
+	}
 </script>
 
 <main class="p-8">
@@ -64,8 +45,10 @@
 					class="top-4 right-8 px-4 py-2 hover:bg-green-400 hover:text-black text-white border-green-400 border-b-2 border-t-2"
 					on:click={() => {
 						/* @ts-ignore */
-						try{form.message=''} catch{}
-						showDialog = true
+						try {
+							form.message = '';
+						} catch {}
+						showDialog = true;
 					}}>Create Project</Button
 				>
 			</AlertDialog.Trigger>
@@ -85,7 +68,13 @@
 								{/if}
 							</Card.Header>
 							<Card.Content>
-								<form method="post" action="?/createProject" id="createProjectForm" enctype="multipart/form-data" use:enhance>
+								<form
+									method="post"
+									action="?/createProject"
+									id="createProjectForm"
+									enctype="multipart/form-data"
+									use:enhance
+								>
 									<div class="grid w-full items-center gap-4 text-white">
 										<div class="flex flex-col space-y-1.5">
 											<Label for="name">Name <span>*</span></Label>
@@ -101,7 +90,13 @@
 										</div>
 										<div class="flex flex-col space-y-1.5">
 											<Label for="image">Image <span>*</span></Label>
-											<Input id="image" type="file" name="projectImage"  class="cursor-pointer" on:change={fileValidation} />
+											<Input
+												id="image"
+												type="file"
+												name="projectImage"
+												class="cursor-pointer"
+												on:change={fileValidation}
+											/>
 										</div>
 									</div>
 									<div class="flex flex-row pt-12 justify-between">
@@ -109,7 +104,7 @@
 											variant="ghost"
 											class="text-white hover:text-black"
 											type="button"
-											on:click={() => showDialog = false}>Cancel</Button
+											on:click={() => (showDialog = false)}>Cancel</Button
 										>
 										<Button
 											variant="default"
@@ -140,19 +135,41 @@
 
 	<!-- List of user projects -->
 
+	{#if data.projects.length === 0}
+	<div class="flex justify-center items-center">
+			<div class="relative block max-w-sm p-6 h-40 w-80 rounded-lg hover:opacity-80 hover:shadow-lg">
+				<div
+					class="p-6 absolute inset-0 bg-opacity-20 backdrop-blur-lg bg-gray-400 border border-white rounded-lg text-center"
+				>
+					<h3 class="text-white font-bold">No Projects Found</h3>
+					<p class="text-green-400 pt-8">Create some cool projects</p>
+				</div>
+			</div>
+			</div>
+	{/if}
+
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
-		{#each userProjects as project (project.id)}
+
+		{#each data.projects as project (project.projectId)}
 			<a
-				href="/project/{project.id}"
+				href="/project/{project.projectId}"
 				class="relative block max-w-sm p-6 h-40 rounded-lg hover:opacity-80 hover:shadow-lg"
 			>
 				<div
 					class="p-6 absolute inset-0 bg-opacity-20 backdrop-blur-lg bg-green-400 border border-green-400 rounded-lg"
 				>
 					<h5 class="mb-2 text-2xl font-bold tracking-tight text-white dark:text-white">
-						{project.title}
+						{project.projectName}
 					</h5>
-					<p class="pt-5 font-normal text-white dark:text-gray-400">{project.description}</p>
+					{#if project.projectDescription === 'null'}
+						<p class="pt-5 font-normal text-gray-400 italic dark:text-gray-400">
+							No description provided
+						</p>
+					{:else}
+						<p class="pt-5 font-normal text-white dark:text-gray-400">
+							{project.projectDescription}
+						</p>
+					{/if}
 				</div>
 			</a>
 		{/each}
