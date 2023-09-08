@@ -23,22 +23,36 @@ export const actions = {
             return fail(400, { message: "Invalid name value" })
         }
 
-        if(!imgFile || !(/(\jpg|\jpeg)$/i).exec(imgFile.type) ){
+        if (!imgFile || !(/(\jpg|\jpeg)$/i).exec(imgFile.type)) {
             return fail(400, { message: "Image is required & only JPG/JPEG allowed" })
         }
 
-        if(!imgFile || !(/(\csv)$/i).exec(csvFile.type) ){
-            return fail(400, { message: "Only CSV allowed" })
+        const mintAddresses = []
+
+        if (csvFile && (/(csv)$/i).exec(csvFile.type)) {
+            const csvData = await csvFile.text();
+            mintAddresses.push(...(csvData.split(",").map((e) => e.replaceAll("\n", ""))))
         }
 
-        const dbRes = await supabase.from("projects").select("underdogId:underdog_id").eq("id", projectId)
-        if (dbRes.data.length === 0) {
-            return fail(404, { message: "Project not found" })
+        if (publicKeys) {
+            mintAddresses.push(...(publicKeys.split(",").map((e) => e.replaceAll("\n", ""))))
+        }
+
+        console.log(mintAddresses);
+
+        if(mintAddresses.length===0){
+            return fail(400, { message: "No mint address provided!" })
         }
 
 
-        const underProjectId = dbRes.data[0].underdogId
-        console.log(underProjectId);
+        // const dbRes = await supabase.from("projects").select("underdogId:underdog_id").eq("id", projectId)
+        // if (dbRes.data.length === 0) {
+        //     return fail(404, { message: "Project not found" })
+        // }
+
+
+        // const underProjectId = dbRes.data[0].underdogId
+        // console.log(underProjectId);
 
 
     }
