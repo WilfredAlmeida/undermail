@@ -7,6 +7,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { enhance } from '$app/forms';
+	export let form
 
 	let name = '';
 	let description = '';
@@ -90,7 +91,7 @@
 			<Card.Content>
 				<div class="grid w-full items-center gap-4 text-white">
 					<div class="flex flex-col space-y-4">
-						<Label for="name">Name</Label>
+						<Label for="name">Name <span class="text-red-600">*</span></Label>
 						<Input
 							id="name"
 							name="name"
@@ -108,7 +109,7 @@
 						/>
 					</div>
 					<div class="flex flex-col space-y-1.5">
-						<Label for="nftImage">Image</Label>
+						<Label for="nftImage">Image <span class="text-red-600">*</span></Label>
 						<Input
 							id="sourceNftImage"
 							name="nftImage"
@@ -119,6 +120,10 @@
 							}}
 						/>
 					</div>
+
+					{#if form && form.message && form.message.toString().trim().length > 0}
+						<p class="text-red-400 pt-10">{form.message}</p>
+					{/if}
 				</div>
 			</Card.Content>
 		</Card.Root>
