@@ -5,10 +5,6 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
-	const { projectId } = $page.params;
-	console.log("PROJECT ID");
-	console.log($page.url);
-
 	let paneItems = [
 		{
 			itemId: 0,
