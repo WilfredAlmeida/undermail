@@ -7,7 +7,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { enhance } from '$app/forms';
-	export let form
+	export let form;
 
 	let name = '';
 	let description = '';
@@ -185,3 +185,14 @@
 		</Card.Root>
 	</div>
 </div>
+
+{#if form && form.success!==undefined && form.success===true}
+<div
+	id="notification"
+	class="fixed top-20 right-0 p-4 m-4 bg-green-400 text-black shadow-md rounded-lg"
+>
+	<p class="text-lg font-bold text-center">Mint Initiated</p>
+	<p class="text-gray-900 italic">Goto history to check it out</p>
+
+</div>
+{/if}

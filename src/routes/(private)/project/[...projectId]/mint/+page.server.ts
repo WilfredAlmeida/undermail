@@ -1,3 +1,4 @@
+import { UNDERDOG_KEY } from '$env/static/private'
 import { error, fail } from '@sveltejs/kit'
 
 export const actions = {
@@ -40,21 +41,75 @@ export const actions = {
 
         console.log(mintAddresses);
 
-        if(mintAddresses.length===0){
+        if (mintAddresses.length === 0) {
             return fail(400, { message: "No mint address provided!" })
         }
 
 
-        // const dbRes = await supabase.from("projects").select("underdogId:underdog_id").eq("id", projectId)
-        // if (dbRes.data.length === 0) {
-        //     return fail(404, { message: "Project not found" })
-        // }
+        const dbRes = await supabase.from("projects").select("underdogId:underdog_id").eq("id", projectId)
+        if (dbRes.data.length === 0) {
+            return fail(404, { message: "Project not found" })
+        }
 
 
-        // const underProjectId = dbRes.data[0].underdogId
-        // console.log(underProjectId);
+        const underdogProjectId = dbRes.data[0].underdogId
+        console.log(underdogProjectId);
 
+        const { data: uploadData, error } = await supabase.storage
+            .from('nft-images')
+            .upload(`${(Math.random() + 1).toString(36).substring(6)}.jpeg`, imgFile);
+
+        if (error) {
+            console.log(error);
+            return fail(500, { message: "Something went wrong" })
+        }
+
+        const imgData = supabase.storage.from('nft-images').getPublicUrl(uploadData?.path!);
+
+        const imgUrl = imgData.data.publicUrl;
+
+        console.log(imgUrl);
+
+        const dbRes2 = await supabase.from("mints").insert({
+            project_id: projectId,
+            image_url: imgUrl,
+            name: nftName,
+            description: nftDescription
+        }).select("id")
+
+        
+        for(let i=0;i < mintAddresses.length;i++) {
+            console.log("LOOP INIT");
+            
+            const reqBody = JSON.stringify({
+                name: nftName,
+                description: nftDescription===null?"":nftDescription,
+                image: imgUrl,
+                receiverAddress: mintAddresses[i]
+            })
+
+            // console.log(reqBody);
+            
+
+            fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
+                method: "POST",
+                body: reqBody,
+                headers: {
+                    accept: 'application/json',
+                    'content-type': 'application/json',
+                    authorization: `Bearer ${UNDERDOG_KEY}`
+                  }
+            }).then(async (r)=>{
+                console.log(await r.json());
+            })
+
+            console.log("LOOP DONE");
+            
+        }
+
+        console.log("RESPONSE RETURNED");
+        
+        return { success: true, successMessage: "Mint Initiated" }
 
     }
 }
-
