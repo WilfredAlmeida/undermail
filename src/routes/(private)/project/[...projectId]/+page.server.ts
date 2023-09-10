@@ -18,7 +18,6 @@ export const load = async ({ url, locals }) => {
     `
 		)
 		.eq('id', projectId);
-	console.log(url);
 
 	if (res.data.length === 0) {
 		throw redirect(307, `${url.origin}/404`);
