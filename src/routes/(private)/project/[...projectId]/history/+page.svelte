@@ -1,5 +1,5 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
 	import { onMount } from 'svelte';
 	import * as Card from '$lib/components/ui/card';
@@ -8,8 +8,28 @@
 	import * as Table from '$lib/components/ui/table';
 	export let data;
 
-	let mintAddresses = []
+	let mintAddresses = [];
 
+	const formatDate = (postgresTimestamp) => {
+		// Create a Date object from the PostgreSQL timestamp
+		const date = new Date(postgresTimestamp);
+		const userLocale = navigator.language;
+
+		// Define the format options
+		const options = {
+			year: 'numeric',
+			month: 'short',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+			hour12: true
+		};
+
+		// Format the date and time using the user's locale
+		const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
+
+		return formattedDate;
+	};
 </script>
 
 <div class="flex items-center justify-center">
@@ -37,14 +57,13 @@
 						alt="mint image"
 						class="w-full h-full object-contain m-0 p-0 hover:cursor-pointer"
 						on:click={() => {
-							mintAddresses = mint.mint_addresses
+							mintAddresses = mint.mint_addresses;
 							const btn = document.getElementById('hiddenButton');
 							btn?.click();
 							console.log(mintAddresses);
-							
 						}}
 					/>
-					<p class="text-green-400 text-right">{mint.created_at}</p>
+					<p class="text-green-400 text-right">{formatDate(mint.created_at)}</p>
 				</Card.Content>
 			</Card.Root>
 		{/each}
@@ -69,15 +88,13 @@
 								</Table.Row>
 							</Table.Header>
 							<Table.Body>
-
-								{#if mintAddresses && mintAddresses.length>0}
-								{#each mintAddresses as address}
-								<Table.Row>
-									<Table.Cell class="font-medium">{address}</Table.Cell>
-								</Table.Row>
-								{/each}
+								{#if mintAddresses && mintAddresses.length > 0}
+									{#each mintAddresses as address}
+										<Table.Row>
+											<Table.Cell class="font-medium">{address}</Table.Cell>
+										</Table.Row>
+									{/each}
 								{/if}
-								
 							</Table.Body>
 						</Table.Root>
 					</div>
