@@ -23,10 +23,10 @@
 
 		return () => subscription.unsubscribe();
 	});
-	console.log(session);
 	
 </script>
 
+{#if session}
 <Navbar avatarUrl={session?.user.user_metadata.avatar_url}/>
-
+{/if}
 <slot />
