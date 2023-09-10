@@ -1,5 +1,6 @@
 import { error, fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { invalidate } from '$app/navigation';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { supabase } = locals;

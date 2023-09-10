@@ -7,14 +7,23 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { enhance } from '$app/forms';
+	import { invalidate } from '$app/navigation';
+
 	// @ts-ignore
 	export let form;
 	export let data;
 
 	let showDialog = false;
+	let isLoading = false;
 
 	const createProject = () => {
-		// showDialog = false;
+		setTimeout(() => {
+			isLoading = true;
+		}, 100);
+		setTimeout(() => {
+			showDialog = false;
+		}, 7000);
+
 	};
 
 	function fileValidation() {
@@ -49,6 +58,7 @@
 							form.message = '';
 						} catch {}
 						showDialog = true;
+						isLoading = false;
 					}}>Create Project</Button
 				>
 			</AlertDialog.Trigger>
@@ -106,12 +116,20 @@
 											type="button"
 											on:click={() => (showDialog = false)}>Cancel</Button
 										>
-										<Button
-											variant="default"
-											class="bg-green-400 hover:bg-green-400 hover:text-black"
-											type="submit"
-											on:click={createProject}>Create</Button
-										>
+										{#if isLoading && !form?.message}
+											<div class="w-12 h-12 relative">
+												<div
+													class="absolute inset-0 animate-spin rounded-full border-t-4 border-green-400 border-solid"
+												/>
+											</div>
+										{:else}
+											<Button
+												variant="default"
+												class="bg-green-400 hover:bg-green-400 hover:text-black"
+												type="submit"
+												on:click={createProject}>Create</Button
+											>
+										{/if}
 									</div>
 								</form>
 							</Card.Content>
@@ -136,8 +154,10 @@
 	<!-- List of user projects -->
 
 	{#if data.projects.length === 0}
-	<div class="flex justify-center items-center">
-			<div class="relative block max-w-sm p-6 h-40 w-80 rounded-lg hover:opacity-80 hover:shadow-lg">
+		<div class="flex justify-center items-center">
+			<div
+				class="relative block max-w-sm p-6 h-40 w-80 rounded-lg hover:opacity-80 hover:shadow-lg"
+			>
 				<div
 					class="p-6 absolute inset-0 bg-opacity-20 backdrop-blur-lg bg-gray-400 border border-white rounded-lg text-center"
 				>
@@ -145,11 +165,10 @@
 					<p class="text-green-400 pt-8">Create some cool projects</p>
 				</div>
 			</div>
-			</div>
+		</div>
 	{/if}
 
 	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-10">
-
 		{#each data.projects as project (project.projectId)}
 			<a
 				href="/project/{project.projectId}"
