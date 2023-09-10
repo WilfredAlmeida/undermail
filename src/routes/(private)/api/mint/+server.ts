@@ -1,6 +1,3 @@
 export const POST = async () => {
-
-    console.log("RECEIVED REQ");
-    
-
-}
+	console.log('RECEIVED REQ');
+};

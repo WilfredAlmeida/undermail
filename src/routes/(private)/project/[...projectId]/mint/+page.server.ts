@@ -1,165 +1,160 @@
-import { UNDERDOG_KEY } from '$env/static/private'
-import { error, fail } from '@sveltejs/kit'
+import { UNDERDOG_KEY } from '$env/static/private';
+import { error, fail } from '@sveltejs/kit';
 
 export const actions = {
-    createMint: async ({ request, fetch, url, locals }) => {
+	createMint: async ({ request, fetch, url, locals }) => {
+		const { supabase } = locals;
 
-        const { supabase } = locals
+		const projectId = url.pathname.split('/')[2];
 
-        const projectId = url.pathname.split("/")[2]
+		const formData = await request.formData();
 
-        const formData = await request.formData()
+		const nftName = formData.get('nameInput')?.toString();
+		const imgFile = formData.get('imgInput') as File;
+		let nftDescription = formData.get('descriptionInput')?.toString();
 
-        const nftName = formData.get("nameInput")?.toString()
-        const imgFile = formData.get("imgInput") as File
-        let nftDescription = formData.get("descriptionInput")?.toString()
+		const csvFile = formData.get('csvFile') as File;
+		let publicKeys = formData.get('publicKeys')?.toString();
 
-        const csvFile = formData.get("csvFile") as File
-        let publicKeys = formData.get("publicKeys")?.toString()
+		nftDescription = nftDescription?.trim() === '' ? null : nftDescription;
+		publicKeys = publicKeys?.trim() === '' ? null : publicKeys;
 
-        nftDescription = nftDescription?.trim() === "" ? null : nftDescription
-        publicKeys = publicKeys?.trim() === "" ? null : publicKeys
+		if (!nftName || nftName.trim().length === 0) {
+			return fail(400, { message: 'Invalid name value' });
+		}
 
-        if (!nftName || nftName.trim().length === 0) {
-            return fail(400, { message: "Invalid name value" })
-        }
+		if (!imgFile || !/(\jpg|\jpeg)$/i.exec(imgFile.type)) {
+			return fail(400, { message: 'Image is required & only JPG/JPEG allowed' });
+		}
 
-        if (!imgFile || !(/(\jpg|\jpeg)$/i).exec(imgFile.type)) {
-            return fail(400, { message: "Image is required & only JPG/JPEG allowed" })
-        }
+		const mintAddresses = [];
 
-        const mintAddresses = []
+		if (csvFile && /(csv)$/i.exec(csvFile.type)) {
+			const csvData = await csvFile.text();
+			mintAddresses.push(...csvData.split(',').map((e) => e.replaceAll('\n', '')));
+		}
 
-        if (csvFile && (/(csv)$/i).exec(csvFile.type)) {
-            const csvData = await csvFile.text();
-            mintAddresses.push(...(csvData.split(",").map((e) => e.replaceAll("\n", ""))))
-        }
+		if (publicKeys) {
+			mintAddresses.push(...publicKeys.split(',').map((e) => e.replaceAll('\n', '')));
+		}
 
-        if (publicKeys) {
-            mintAddresses.push(...(publicKeys.split(",").map((e) => e.replaceAll("\n", ""))))
-        }
+		console.log(mintAddresses);
 
-        console.log(mintAddresses);
+		if (mintAddresses.length === 0) {
+			return fail(400, { message: 'No mint address provided!' });
+		}
 
-        if (mintAddresses.length === 0) {
-            return fail(400, { message: "No mint address provided!" })
-        }
+		const dbRes = await supabase
+			.from('projects')
+			.select('underdogId:underdog_id')
+			.eq('id', projectId);
+		if (dbRes.data.length === 0) {
+			return fail(404, { message: 'Project not found' });
+		}
 
+		const underdogProjectId = dbRes.data[0].underdogId;
+		console.log(underdogProjectId);
 
-        const dbRes = await supabase.from("projects").select("underdogId:underdog_id").eq("id", projectId)
-        if (dbRes.data.length === 0) {
-            return fail(404, { message: "Project not found" })
-        }
+		const { data: uploadData, error } = await supabase.storage
+			.from('nft-images')
+			.upload(`${(Math.random() + 1).toString(36).substring(6)}.jpeg`, imgFile);
 
+		if (error) {
+			console.log(error);
+			return fail(500, { message: 'Something went wrong' });
+		}
 
-        const underdogProjectId = dbRes.data[0].underdogId
-        console.log(underdogProjectId);
+		const imgData = supabase.storage.from('nft-images').getPublicUrl(uploadData?.path!);
 
-        const { data: uploadData, error } = await supabase.storage
-            .from('nft-images')
-            .upload(`${(Math.random() + 1).toString(36).substring(6)}.jpeg`, imgFile);
+		const imgUrl = imgData.data.publicUrl;
 
-        if (error) {
-            console.log(error);
-            return fail(500, { message: "Something went wrong" })
-        }
+		console.log(imgUrl);
 
-        const imgData = supabase.storage.from('nft-images').getPublicUrl(uploadData?.path!);
+		const dbRes2 = await supabase
+			.from('mints')
+			.insert({
+				project_id: projectId,
+				image_url: imgUrl,
+				name: nftName,
+				description: nftDescription,
+				mint_addresses: mintAddresses
+			})
+			.select('id');
 
-        const imgUrl = imgData.data.publicUrl;
+		const fetchPromises = mintAddresses.map(async (mintAddress) => {
+			console.log('LOOP INIT');
 
-        console.log(imgUrl);
+			const reqBody = JSON.stringify({
+				name: nftName,
+				description: nftDescription === null ? '' : nftDescription,
+				image: imgUrl,
+				receiverAddress: mintAddress
+			});
 
-        const dbRes2 = await supabase.from("mints").insert({
-            project_id: projectId,
-            image_url: imgUrl,
-            name: nftName,
-            description: nftDescription,
-            mint_addresses: mintAddresses
-        }).select("id")
+			try {
+				const response = await fetch(
+					`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`,
+					{
+						method: 'POST',
+						body: reqBody,
+						headers: {
+							accept: 'application/json',
+							'content-type': 'application/json',
+							authorization: `Bearer ${UNDERDOG_KEY}`
+						}
+					}
+				);
 
+				const data = await response.json();
+				console.log(data);
 
+				console.log('LOOP DONE');
+				return data;
+			} catch (error) {
+				console.error(error);
+				return null;
+			}
+		});
 
-        const fetchPromises = mintAddresses.map(async (mintAddress) => {
-            console.log("LOOP INIT");
+		Promise.all(fetchPromises)
+			.then((results) => {
+				// Handle the results here if needed
+				console.log('All fetch calls completed:', results);
+			})
+			.catch((error) => {
+				console.error('Error in Promise.all:', error);
+			});
 
-            const reqBody = JSON.stringify({
-                name: nftName,
-                description: nftDescription === null ? "" : nftDescription,
-                image: imgUrl,
-                receiverAddress: mintAddress,
-            });
+		// for(let i=0;i < mintAddresses.length;i++) {
+		//     console.log("LOOP INIT");
 
-            try {
-                const response = await fetch(
-                    `https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`,
-                    {
-                        method: "POST",
-                        body: reqBody,
-                        headers: {
-                            accept: "application/json",
-                            "content-type": "application/json",
-                            authorization: `Bearer ${UNDERDOG_KEY}`,
-                        },
-                    }
-                );
+		//     const reqBody = JSON.stringify({
+		//         name: nftName,
+		//         description: nftDescription===null?"":nftDescription,
+		//         image: imgUrl,
+		//         receiverAddress: mintAddresses[i]
+		//     })
 
-                const data = await response.json();
-                console.log(data);
+		//     // console.log(reqBody);
 
-                console.log("LOOP DONE");
-                return data;
-            } catch (error) {
-                console.error(error);
-                return null;
-            }
-        });
+		//     fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
+		//         method: "POST",
+		//         body: reqBody,
+		//         headers: {
+		//             accept: 'application/json',
+		//             'content-type': 'application/json',
+		//             authorization: `Bearer ${UNDERDOG_KEY}`
+		//           }
+		//     }).then(async (r)=>{
+		//         console.log(await r.json());
+		//     })
 
+		//     console.log("LOOP DONE");
 
-        Promise.all(fetchPromises)
-            .then((results) => {
-                // Handle the results here if needed
-                console.log("All fetch calls completed:", results);
-            })
-            .catch((error) => {
-                console.error("Error in Promise.all:", error);
-            });
+		// }
 
+		console.log('RESPONSE RETURNED');
 
-
-        // for(let i=0;i < mintAddresses.length;i++) {
-        //     console.log("LOOP INIT");
-
-        //     const reqBody = JSON.stringify({
-        //         name: nftName,
-        //         description: nftDescription===null?"":nftDescription,
-        //         image: imgUrl,
-        //         receiverAddress: mintAddresses[i]
-        //     })
-
-        //     // console.log(reqBody);
-
-
-        //     fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
-        //         method: "POST",
-        //         body: reqBody,
-        //         headers: {
-        //             accept: 'application/json',
-        //             'content-type': 'application/json',
-        //             authorization: `Bearer ${UNDERDOG_KEY}`
-        //           }
-        //     }).then(async (r)=>{
-        //         console.log(await r.json());
-        //     })
-
-        //     console.log("LOOP DONE");
-
-        // }
-
-        console.log("RESPONSE RETURNED");
-
-        return { success: true, successMessage: "Mint Initiated" }
-
-    }
-}
-
+		return { success: true, successMessage: 'Mint Initiated' };
+	}
+};
