@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import Navbar from "$components/navbar/navbar.svelte";
+	import { page } from '$app/stores'
 	// export let navbar
 
 	// Supabase Config
@@ -8,6 +9,8 @@
 	import { onMount } from 'svelte';
 
 	export let data;
+
+	const notAllowedPaths = ["/", "/login"]
 
 	let { supabase, session } = data;
 	$: ({ supabase, session } = data);
@@ -26,7 +29,7 @@
 	
 </script>
 
-{#if session}
+{#if session && !notAllowedPaths.includes($page.url.pathname)}
 <Navbar avatarUrl={session?.user.user_metadata.avatar_url}/>
 {/if}
 <slot />
