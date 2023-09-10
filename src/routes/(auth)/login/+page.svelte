@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import { fail, redirect } from '@sveltejs/kit';
 
 	export let data;
@@ -14,7 +14,7 @@
 		const { data: mdata, error: err } = await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options:{
-				redirectTo: `${location.origin}/auth/cb`
+				redirectTo: `${$page.url.origin}/auth/cb`
 			}
 		});
 

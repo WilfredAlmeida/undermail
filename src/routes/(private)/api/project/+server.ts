@@ -61,35 +61,34 @@ export const POST = async ({ request, locals }) => {
 	console.log('IMGURL');
 	console.log(imgUrl);
 
-	// const res = await fetch('https://dev.underdogprotocol.com/v2/projects', {
-	//     method: 'POST',
-	//     body: JSON.stringify({
-	//         name: name,
-	//         description: description===null?'':description,
-	//         image: imgUrl
-	//     }),
-	//     headers: {
-	//         accept: 'application/json',
-	//         'content-type': 'application/json',
-	//         authorization: `Bearer ${UNDERDOG_KEY}`
-	//     }
-	// })
+	const res = await fetch('https://dev.underdogprotocol.com/v2/projects', {
+	    method: 'POST',
+	    body: JSON.stringify({
+	        name: name,
+	        description: description===null?'':description,
+	        image: imgUrl
+	    }),
+	    headers: {
+	        accept: 'application/json',
+	        'content-type': 'application/json',
+	        authorization: `Bearer ${UNDERDOG_KEY}`
+	    }
+	})
 
-	// const resJson = await res.json()
+	const resJson = await res.json()
 
-	// if(res.status!==202){
-	//     return new Response(JSON.stringify({
-	//         status: "UNDERDOG_PROJECT_CREATION_FAILED",
-	//         data: null,
-	//         error: [JSON.stringify(resJson)]
-	//     }), {
-	//         status: res.status,
-	//         headers: { 'Content-Type': 'application/json' }
-	//     })
-	// }
+	if(res.status!==202){
+	    return new Response(JSON.stringify({
+	        status: "UNDERDOG_PROJECT_CREATION_FAILED",
+	        data: null,
+	        error: [JSON.stringify(resJson)]
+	    }), {
+	        status: res.status,
+	        headers: { 'Content-Type': 'application/json' }
+	    })
+	}
 
-	// const underdogProjectId = resJson.projectId;
-	const underdogProjectId = 4;
+	const underdogProjectId = resJson.projectId;
 	const projectId = generateAlphanumericString(6);
 	const {
 		data: {
