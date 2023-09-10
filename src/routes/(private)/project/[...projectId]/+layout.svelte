@@ -4,31 +4,26 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	export let data
 
 	let paneItems = [
 		{
 			itemId: 0,
 			icon: Home,
 			hoverText: 'Project Home',
-			action: `${$page.url.href}`
+			action: `${$page.url.origin}/project/${data.projectId}`
 		},
 		{
 			itemId: 1,
 			icon: Send,
 			hoverText: 'Mint',
-			action: `${$page.url.href}/mint`
+			action: `${$page.url.origin}/project/${data.projectId}/mint`
 		},
 		{
 			itemId: 2,
 			icon: History,
 			hoverText: 'Mint History',
-			action: `${$page.url.href}/history`
-		},
-		{
-			itemId: 3,
-			icon: Settings,
-			hoverText: 'Project Settings',
-			action: null
+			action: `${$page.url.origin}/project/${data.projectId}/history`
 		}
 	];
 </script>

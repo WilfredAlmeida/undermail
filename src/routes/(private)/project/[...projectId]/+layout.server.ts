@@ -10,4 +10,7 @@ export const load = async({url, locals})=>{
         throw redirect(307, `${url.origin}/404`)
     }
     
+    return {
+        projectId
+    }
 }
