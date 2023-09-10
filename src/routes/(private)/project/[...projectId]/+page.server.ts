@@ -1,4 +1,5 @@
-import { error } from '@sveltejs/kit';
+import { goto } from '$app/navigation';
+import { error, redirect } from '@sveltejs/kit';
 
 export const load = async({url, locals})=>{
     const {supabase} = locals;
@@ -12,8 +13,10 @@ export const load = async({url, locals})=>{
     mintCount:mint_count,
     createdAt:created_at
     `).eq("id", projectId)
+console.log(url);
 
     if(res.data.length===0){
+        throw redirect(307,`${url.origin}/404`)
         return error(404, {"message": "Project not found"})
     }
 
