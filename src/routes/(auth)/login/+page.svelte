@@ -14,7 +14,8 @@
 		const { data: mdata, error: err } = await supabase.auth.signInWithOAuth({
 			provider: 'google',
 			options:{
-				redirectTo: `${$page.url.origin}/auth/cb`
+				redirectTo: `https://undermail-git-dev-wilfredalmeida.vercel.app/auth/cb`
+				// redirectTo: `${$page.url.origin}/auth/cb`
 			}
 		});
 
