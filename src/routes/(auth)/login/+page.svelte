@@ -36,14 +36,14 @@
 </script>
 
 <main
-	class="flex items-center justify-center h-screen bg-gradient-to-b from-pink-400 to-purple-900"
+	class="flex items-center justify-center h-screen "
 >
 	<div
 		class="grid grid-cols-2 gap-6 bg-white bg-opacity-20 rounded-lg p-8 backdrop-blur-lg shadow-lg"
 	>
 		<!-- Left Side -->
 		<div class="flex flex-col justify-center">
-			<h1 class="text-3xl font-semibold text-white mb-4">NftChimp</h1>
+			<h1 class="text-3xl font-semibold text-white mb-4">UnderMail</h1>
 			<ul class="text-white space-y-2">
 				<li>
 					<span class="text-green-400 mr-2">&#9679;</span>

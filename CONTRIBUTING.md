@@ -1,10 +1,10 @@
 ## Contributing
 
-First off, thank you for considering contributing to `nftchimp`. It's people like you that make it such a great tool.
+First off, thank you for considering contributing to `undermail`. It's people like you that make it such a great tool.
 
 Please read the [Code of Conduct](CODE_OF_CONDUCT.md) before contributing.
 
-**Note**: Please get your contributions approved by the maintainers of [nftchimp](https://github.com/WilfredAlmeida/nftchimp) before you start working on them. This will help avoid any conflicts and also help you understand if the contribution is in line with the project goals. You can do this by opening an issue with appropriate label and describing your contribution in detail.
+**Note**: Please get your contributions approved by the maintainers of [undermail](https://github.com/WilfredAlmeida/undermail) before you start working on them. This will help avoid any conflicts and also help you understand if the contribution is in line with the project goals. You can do this by opening an issue with appropriate label and describing your contribution in detail.
 
 ### You have found a bug
 
@@ -44,15 +44,17 @@ Open an issue with the label `random` and discuss them there. You can ping me on
 
 ## Developing Locally
 
-`nftchimp` is built using:
+`undermail` is built using:
 1. Sveltekit
 2. Supabase
 3. Underdog API
 
 ### `.env` config
-You need to provide the following values via the environment. The `KV_` values are provided on the Vercel KV DB dashboard. The `UNDERDOG_KEY` is available on its dashboard.
+You need to provide the following values via the environment. The `UNDERDOG_KEY` is available on its dashboard. Supabase credentials are available on it's project dashboard.
 ```
 UNDERDOG_KEY
+PUBLIC_SUPABASE_URL
+PUBLIC_SUPABASE_ANON_KEY
 ```
 
 1. Clone the repository
