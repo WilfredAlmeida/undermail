@@ -74,42 +74,92 @@ export const actions = {
             project_id: projectId,
             image_url: imgUrl,
             name: nftName,
-            description: nftDescription
+            description: nftDescription,
+            mint_addresses: mintAddresses
         }).select("id")
 
-        
-        for(let i=0;i < mintAddresses.length;i++) {
+
+
+        const fetchPromises = mintAddresses.map(async (mintAddress) => {
             console.log("LOOP INIT");
-            
+
             const reqBody = JSON.stringify({
                 name: nftName,
-                description: nftDescription===null?"":nftDescription,
+                description: nftDescription === null ? "" : nftDescription,
                 image: imgUrl,
-                receiverAddress: mintAddresses[i]
+                receiverAddress: mintAddress,
+            });
+
+            try {
+                const response = await fetch(
+                    `https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`,
+                    {
+                        method: "POST",
+                        body: reqBody,
+                        headers: {
+                            accept: "application/json",
+                            "content-type": "application/json",
+                            authorization: `Bearer ${UNDERDOG_KEY}`,
+                        },
+                    }
+                );
+
+                const data = await response.json();
+                console.log(data);
+
+                console.log("LOOP DONE");
+                return data;
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        });
+
+
+        Promise.all(fetchPromises)
+            .then((results) => {
+                // Handle the results here if needed
+                console.log("All fetch calls completed:", results);
             })
+            .catch((error) => {
+                console.error("Error in Promise.all:", error);
+            });
 
-            // console.log(reqBody);
-            
 
-            fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
-                method: "POST",
-                body: reqBody,
-                headers: {
-                    accept: 'application/json',
-                    'content-type': 'application/json',
-                    authorization: `Bearer ${UNDERDOG_KEY}`
-                  }
-            }).then(async (r)=>{
-                console.log(await r.json());
-            })
 
-            console.log("LOOP DONE");
-            
-        }
+        // for(let i=0;i < mintAddresses.length;i++) {
+        //     console.log("LOOP INIT");
+
+        //     const reqBody = JSON.stringify({
+        //         name: nftName,
+        //         description: nftDescription===null?"":nftDescription,
+        //         image: imgUrl,
+        //         receiverAddress: mintAddresses[i]
+        //     })
+
+        //     // console.log(reqBody);
+
+
+        //     fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
+        //         method: "POST",
+        //         body: reqBody,
+        //         headers: {
+        //             accept: 'application/json',
+        //             'content-type': 'application/json',
+        //             authorization: `Bearer ${UNDERDOG_KEY}`
+        //           }
+        //     }).then(async (r)=>{
+        //         console.log(await r.json());
+        //     })
+
+        //     console.log("LOOP DONE");
+
+        // }
 
         console.log("RESPONSE RETURNED");
-        
+
         return { success: true, successMessage: "Mint Initiated" }
 
     }
 }
+
