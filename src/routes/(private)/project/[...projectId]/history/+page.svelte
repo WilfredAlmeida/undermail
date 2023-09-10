@@ -1,7 +1,5 @@
 <script>
 	// @ts-nocheck
-
-	import { onMount } from 'svelte';
 	import * as Card from '$lib/components/ui/card';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Button from '$components/ui/button/button.svelte';
@@ -10,26 +8,6 @@
 
 	let mintAddresses = [];
 
-	const formatDate = (postgresTimestamp) => {
-		// Create a Date object from the PostgreSQL timestamp
-		const date = new Date(postgresTimestamp);
-		const userLocale = navigator.language;
-
-		// Define the format options
-		const options = {
-			year: 'numeric',
-			month: 'short',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-			hour12: true
-		};
-
-		// Format the date and time using the user's locale
-		const formattedDate = new Intl.DateTimeFormat(userLocale, options).format(date);
-
-		return formattedDate;
-	};
 </script>
 
 <div class="flex items-center justify-center">
@@ -63,7 +41,7 @@
 							console.log(mintAddresses);
 						}}
 					/>
-					<p class="text-green-400 text-right">{formatDate(mint.created_at)}</p>
+					<p class="text-green-400 text-right">{mint.created_at}</p>
 				</Card.Content>
 			</Card.Root>
 		{/each}
