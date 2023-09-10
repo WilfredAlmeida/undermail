@@ -61,6 +61,7 @@ export const POST = async ({ request, locals }) => {
 	console.log('IMGURL');
 	console.log(imgUrl);
 
+
 	const res = await fetch('https://dev.underdogprotocol.com/v2/projects', {
 	    method: 'POST',
 	    body: JSON.stringify({
@@ -89,6 +90,7 @@ export const POST = async ({ request, locals }) => {
 	}
 
 	const underdogProjectId = resJson.projectId;
+
 	const projectId = generateAlphanumericString(6);
 	const {
 		data: {
