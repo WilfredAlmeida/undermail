@@ -27,6 +27,16 @@
 	];
 </script>
 
+<div class="flex justify-between p-4">
+	<div></div> <!-- Empty div to push the button to the right -->
+	<Button
+	variant="ghost"
+	class="rounded-full font-semibold border border-green-400 hover:bg-green-400 text-green-400 hover:text-black py-2 px-6 mt-8"
+	on:click={() => goto('/dashboard')}>Get Started</Button
+>
+  </div>
+  
+
 <div class=" text-white py-10">
 	<div class="container mx-auto text-center items-center justify-center flex flex-col">
 		<div class="w-40 h-40 text-center items-center justify-center flex">
