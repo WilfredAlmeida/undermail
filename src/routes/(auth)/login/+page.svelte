@@ -1,4 +1,5 @@
 <script lang="ts">
+
 	import { page } from '$app/stores';
 	import { fail, redirect } from '@sveltejs/kit';
 
@@ -15,6 +16,7 @@
 			provider: 'google',
 			options:{
 				redirectTo: `${$page.url.origin}/auth/cb`
+
 			}
 		});
 

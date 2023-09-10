@@ -89,6 +89,7 @@ export const POST = async ({ request, locals }) => {
 	}
 
 	const underdogProjectId = resJson.projectId;
+
 	const projectId = generateAlphanumericString(6);
 	const {
 		data: {
