@@ -7,11 +7,6 @@ export const actions = {
 		console.log(url);
 		const projectId = url.pathname.split('/')[2];
 
-		// const mintId=4;
-		// const mAddr="hello"
-		// console.log(`${url.origin}/${projectId}/view/${mintId}?pk=${mAddr}`);
-
-
 		const formData = await request.formData();
 
 		const nftName = formData.get('nameInput')?.toString();
@@ -140,7 +135,7 @@ export const actions = {
 		// 		console.error('Error in Promise.all:', error);
 		// 	});
 
-		// http://localhost:5173/nkIEZE/view/31?pk=HiCxdbmyx73QisDrPRBSTNmq6f6wn5Rib356aCQiipt6
+		// http://localhost:5173/project/nkIEZE/view/31?pk=HiCxdbmyx73QisDrPRBSTNmq6f6wn5Rib356aCQiipt6
 		for (let i = 0; i < mintAddresses.length; i++) {
 			console.log("LOOP INIT");
 
@@ -150,7 +145,7 @@ export const actions = {
 				image: imgUrl,
 				receiverAddress: mintAddresses[i],
 				attributes: {
-					view: `${url.origin}/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
+					view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
 				}
 			})
 
