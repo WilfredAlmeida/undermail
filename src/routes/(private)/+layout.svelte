@@ -3,7 +3,8 @@
 	import { goto, invalidate } from '$app/navigation';
 
 	import type { LayoutData } from './$types';
-	
+	import { page } from '$app/stores';
+	import { bypassAuthRoutes } from '$lib/utils';
 
 	export let data: LayoutData;
 	$: ({ supabase, session } = data);
@@ -13,7 +14,7 @@
 		const {
 			data: { subscription }
 		} = supabase.auth.onAuthStateChange((event, _session) => {
-			if (!_session) goto('/login');
+			if (!_session && !bypassAuthRoutes.includes($page.url.pathname.split("/")[3]) ) goto('/login');
 			else if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
 			} else loading = false;
