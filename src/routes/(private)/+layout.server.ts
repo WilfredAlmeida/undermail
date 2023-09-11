@@ -7,7 +7,7 @@ export const load: LayoutServerLoad = async ({ locals, url }) => {
 		console.log("BYPASS AUTH ROUTE");
 		return {};
 	}
-	console.log("GONNA RUN");
+	
 	/* @ts-ignore */
 	const session = await locals.getSession();
 	if (!session) throw redirect(303, '/login');

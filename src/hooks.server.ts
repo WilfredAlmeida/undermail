@@ -32,7 +32,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			console.log("BYPASS AUTH ROUTE IN HOOKS");
 			return {};
 		}
-console.log("GONNA RUN in HOOKS");
+
 
 		if (!session) {
 			// the user is not signed in
