@@ -8,10 +8,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 	const { data: userData } = await supabase.from('users').select('id').eq('email', email);
 
-	if (userData.length === 0) {
+	if (userData!.length === 0) {
 		return error(404, 'User not found');
 	}
-	const userIdInDb = userData[0].id;
+	const userIdInDb = userData![0].id;
 
 	const { data: projectData } = await supabase
 		.from('projects')
@@ -27,13 +27,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 		)
 		.eq('user_id', userIdInDb);
 
-	if (projectData.length === 0) {
+	if (projectData!.length === 0) {
 		return { projects: [] };
 	}
 
 	// console.log(projectData);
 
-	return { projects: projectData.reverse() };
+	return { projects: projectData!.reverse() };
 };
 
 export const actions = {

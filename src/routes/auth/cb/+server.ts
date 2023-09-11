@@ -1,6 +1,6 @@
 import { redirect, type RequestHandler } from '@sveltejs/kit';
 import { ulid } from 'ulid';
-/* @ts-ignore */
+
 export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 	const code = url.searchParams.get('code');
 
@@ -12,6 +12,7 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 
 	const {
 		data: {
+			/* @ts-ignore */
 			session: { user }
 		}
 	} = await supabase.auth.getSession();

@@ -11,10 +11,10 @@ export const actions = {
 
 		const nftName = formData.get('nameInput')?.toString();
 		const imgFile = formData.get('imgInput') as File;
-		let nftDescription = formData.get('descriptionInput')?.toString();
+		let nftDescription: String | undefined | null = formData.get('descriptionInput')?.toString();
 
 		const csvFile = formData.get('csvFile') as File;
-		let publicKeys = formData.get('publicKeys')?.toString();
+		let publicKeys: String | undefined | null = formData.get('publicKeys')?.toString();
 
 		nftDescription = nftDescription?.trim() === '' ? null : nftDescription;
 		publicKeys = publicKeys?.trim() === '' ? null : publicKeys;
@@ -27,7 +27,7 @@ export const actions = {
 			return fail(400, { message: 'Image is required & only JPG/JPEG allowed' });
 		}
 
-		const mintAddresses = [];
+		const mintAddresses: String[] = [];
 
 		if (csvFile && /(csv)$/i.exec(csvFile.type)) {
 			const csvData = await csvFile.text();
@@ -48,11 +48,11 @@ export const actions = {
 			.from('projects')
 			.select('underdogId:underdog_id')
 			.eq('id', projectId);
-		if (dbRes.data.length === 0) {
+		if (dbRes!.data!.length === 0) {
 			return fail(404, { message: 'Project not found' });
 		}
 
-		const underdogProjectId = dbRes.data[0].underdogId;
+		const underdogProjectId = dbRes!.data![0].underdogId;
 		console.log(underdogProjectId);
 
 		const { data: uploadData, error } = await supabase.storage
@@ -82,8 +82,8 @@ export const actions = {
 			.select('id');
 
 		let mintId;
-		if (dbRes2.data.length > 0) {
-			mintId = dbRes2.data[0].id
+		if (dbRes2!.data!.length > 0) {
+			mintId = dbRes2!.data![0].id
 		}
 		console.log("MINT ID");
 		console.log(mintId);

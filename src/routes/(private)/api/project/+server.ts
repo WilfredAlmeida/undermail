@@ -92,13 +92,14 @@ export const POST = async ({ request, locals }) => {
 	const projectId = generateAlphanumericString(6);
 	const {
 		data: {
+			/* @ts-ignore */
 			user: { email }
 		}
 	} = await supabase.auth.getUser();
 
 	const { data } = await supabase.from('users').select('id').eq('email', email);
 
-	if (data.length === 0) {
+	if (data!.length === 0) {
 		return new Response(
 			JSON.stringify({
 				status: 'USER_NOT_FOUND',
@@ -115,7 +116,7 @@ export const POST = async ({ request, locals }) => {
 			}
 		);
 	}
-	const userIdInDb = data[0].id;
+	const userIdInDb = data![0].id;
 
 	console.log(userIdInDb);
 
