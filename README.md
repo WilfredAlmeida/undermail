@@ -1,3 +1,5 @@
+![logo-removebg-preview](https://github.com/WilfredAlmeida/undermail/assets/60785452/3ada6791-1658-41cb-a4b2-bd28c71d24e7)
+
 # UnderMail: The MailChimp of Solana with cNFTs
 
 UnderMail aims to provide mailchimp like features to collect, distribute and analyze cNFTs.
