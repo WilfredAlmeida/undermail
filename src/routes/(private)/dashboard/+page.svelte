@@ -9,7 +9,6 @@
 	import { enhance } from '$app/forms';
 	import { invalidate } from '$app/navigation';
 
-	// @ts-ignore
 	export let form;
 	export let data;
 
@@ -29,7 +28,6 @@
 	function fileValidation() {
 		var fileInput = document.getElementById('image');
 
-		// @ts-ignore
 		var filePath = fileInput?.value;
 
 		// Allowing file type
@@ -37,7 +35,6 @@
 
 		if (!allowedExtensions.exec(filePath)) {
 			alert('Only JPG/JPEG Allowed');
-			// @ts-ignore
 			fileInput.value = '';
 			return false;
 		}
@@ -53,7 +50,6 @@
 					variant="ghost"
 					class="top-4 right-8 px-4 py-2 hover:bg-green-400 hover:text-black text-white border-green-400 border-b-2 border-t-2"
 					on:click={() => {
-						/* @ts-ignore */
 						try {
 							form.message = '';
 						} catch {}

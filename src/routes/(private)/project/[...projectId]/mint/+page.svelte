@@ -23,7 +23,6 @@
 		var filePath = sourceFile.value;
 		if (!allowedExtensions.exec(filePath)) {
 			alert(`Only JPG/JPEG Allowed`);
-			// @ts-ignore
 			sourceFile.value = '';
 			return false;
 		}
@@ -31,18 +30,15 @@
 		targetFile.files = sourceFile.files;
 	};
 
-	// @ts-ignore
 	const csvValidation = () => {
 		var fileInput = document.getElementById('csvFile');
 
-		// @ts-ignore
 		var filePath = fileInput?.value;
 
 		var allowedExtensions = /(\.csv)$/i;
 
 		if (!allowedExtensions.exec(filePath)) {
 			alert(`Only CSV Allowed`);
-			// @ts-ignore
 			fileInput.value = '';
 			return false;
 		}
