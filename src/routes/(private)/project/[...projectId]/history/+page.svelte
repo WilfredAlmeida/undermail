@@ -4,9 +4,11 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Button from '$components/ui/button/button.svelte';
 	import * as Table from '$lib/components/ui/table';
+	import * as Tabs from "$lib/components/ui/tabs";
 	export let data;
 
 	let mintAddresses = [];
+	let viewedAddresses = [];
 
 </script>
 
@@ -36,6 +38,7 @@
 						class="w-full h-full object-contain m-0 p-0 hover:cursor-pointer"
 						on:click={() => {
 							mintAddresses = mint.mint_addresses;
+							viewedAddresses = mint.viewed_by;
 							const btn = document.getElementById('hiddenButton');
 							btn?.click();
 							console.log(mintAddresses);
@@ -58,23 +61,56 @@
 				<!-- <AlertDialog.Title>Create a new Project</AlertDialog.Title> -->
 				<AlertDialog.Description>
 					<div class="overflow-y-auto max-h-[300px]">
-						<Table.Root class="text-white text-center">
-							<Table.Caption class="text-green-400">A list of recipient addresses.</Table.Caption>
-							<Table.Header>
-								<Table.Row>
-									<Table.Head class="w-[100px] text-green-400 text-center">Mint Address</Table.Head>
-								</Table.Row>
-							</Table.Header>
-							<Table.Body>
-								{#if mintAddresses && mintAddresses.length > 0}
-									{#each mintAddresses as address}
+						
+						<Tabs.Root value="receivers" class="w-[400px] bg-none">
+							<Tabs.List class="bg-none">
+							  <Tabs.Trigger value="receivers" class="bg-none">Receivers</Tabs.Trigger>
+							  <Tabs.Trigger value="viewed">Viewers</Tabs.Trigger>
+							</Tabs.List>
+							<Tabs.Content value="receivers">
+							  
+								<Table.Root class="text-white text-center">
+									<Table.Caption class="text-green-400">A list of recipient addresses.</Table.Caption>
+									<Table.Header>
 										<Table.Row>
-											<Table.Cell class="font-medium">{address}</Table.Cell>
+											<Table.Head class="w-[100px] text-green-400 text-center">Mint Address</Table.Head>
 										</Table.Row>
-									{/each}
-								{/if}
-							</Table.Body>
-						</Table.Root>
+									</Table.Header>
+									<Table.Body>
+										{#if mintAddresses && mintAddresses.length > 0}
+											{#each mintAddresses as address}
+												<Table.Row>
+													<Table.Cell class="font-medium">{address}</Table.Cell>
+												</Table.Row>
+											{/each}
+										{/if}
+									</Table.Body>
+								</Table.Root>
+
+							</Tabs.Content>
+							<Tabs.Content value="viewed">
+
+								<Table.Root class="text-white text-center">
+									<Table.Caption class="text-green-400">A list of viewers.</Table.Caption>
+									<Table.Header>
+										<Table.Row>
+											<Table.Head class="w-[100px] text-green-400 text-center">Viewers Address</Table.Head>
+										</Table.Row>
+									</Table.Header>
+									<Table.Body>
+										{#if viewedAddresses && viewedAddresses.length > 0}
+											{#each viewedAddresses as address}
+												<Table.Row>
+													<Table.Cell class="font-medium">{address}</Table.Cell>
+												</Table.Row>
+											{/each}
+										{/if}
+									</Table.Body>
+								</Table.Root> 
+
+							</Tabs.Content>
+						  </Tabs.Root>
+
 					</div>
 				</AlertDialog.Description>
 			</AlertDialog.Header>
@@ -84,3 +120,22 @@
 		</AlertDialog.Content>
 	</AlertDialog.Root>
 </div>
+<!-- 
+<Table.Root class="text-white text-center">
+	<Table.Caption class="text-green-400">A list of recipient addresses.</Table.Caption>
+	<Table.Header>
+		<Table.Row>
+			<Table.Head class="w-[100px] text-green-400 text-center">Mint Address</Table.Head>
+		</Table.Row>
+	</Table.Header>
+	<Table.Body>
+		{#if mintAddresses && mintAddresses.length > 0}
+			{#each mintAddresses as address}
+				<Table.Row>
+					<Table.Cell class="font-medium">{address}</Table.Cell>
+				</Table.Row>
+			{/each}
+		{/if}
+	</Table.Body>
+</Table.Root> 
+-->

@@ -34,8 +34,8 @@
 			<Card.Title class="text-sm font-medium text-center text-white">Analytics</Card.Title>
 		</Card.Header>
 		<Card.Content>
-			<div class="text-2xl font-bold text-center text-white">Coming Soon...</div>
-			<p class="text-xs text-center text-green-400 pt-5">Stay Tuned</p>
+			<div class="text-2xl font-bold text-center text-white">Available per Mint</div>
+			<p class="text-xs text-center text-green-400 pt-5">Click on mint in history</p>
 		</Card.Content>
 	</Card.Root>
 </div>
