@@ -4,6 +4,7 @@ import { bypassAuthRoutes } from '$lib/utils';
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit';
 import { redirect, type Handle } from '@sveltejs/kit';
 
+/* @ts-ignore */
 export const handle: Handle = async ({ event, resolve }) => {
 	event.locals.supabase = createSupabaseServerClient({
 		supabaseUrl: PUBLIC_SUPABASE_URL,
