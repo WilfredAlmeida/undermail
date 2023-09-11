@@ -151,17 +151,17 @@ export const actions = {
 
 			console.log(reqBody);
 
-			// fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
-			//     method: "POST",
-			//     body: reqBody,
-			//     headers: {
-			//         accept: 'application/json',
-			//         'content-type': 'application/json',
-			//         authorization: `Bearer ${UNDERDOG_KEY}`
-			//       }
-			// }).then(async (r)=>{
-			//     console.log(await r.json());
-			// })
+			fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
+			    method: "POST",
+			    body: reqBody,
+			    headers: {
+			        accept: 'application/json',
+			        'content-type': 'application/json',
+			        authorization: `Bearer ${UNDERDOG_KEY}`
+			      }
+			}).then(async (r)=>{
+			    console.log(await r.json());
+			})
 
 			console.log("LOOP DONE");
 
