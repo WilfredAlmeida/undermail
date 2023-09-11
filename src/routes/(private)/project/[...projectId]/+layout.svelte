@@ -4,6 +4,8 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import { bypassLeftPaneRoutes } from '$lib/utils';
+
 	export let data
 
 	let paneItems = [
@@ -28,6 +30,7 @@
 	];
 </script>
 
+{#if !bypassLeftPaneRoutes.includes($page.url.pathname.split("/")[3])}
 <div class="flex h-screen shadow-lg">
 	<div
 		class="w-16 p-6 shadow-md border-r-2 border-animation flex flex-col justify-start items-center"
@@ -46,6 +49,11 @@
 		{/each}
 	</div>
 	<div class="w-full">
+		<slot/>
+	</div>
+</div>
+{:else}
+<div class="w-full">
 	<slot/>
 </div>
-</div>
+{/if}
