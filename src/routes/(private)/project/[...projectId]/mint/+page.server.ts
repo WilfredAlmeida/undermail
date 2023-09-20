@@ -83,9 +83,9 @@ export const actions = {
 
 		let mintId;
 		if (dbRes2!.data!.length > 0) {
-			mintId = dbRes2!.data![0].id
+			mintId = dbRes2!.data![0].id;
 		}
-		console.log("MINT ID");
+		console.log('MINT ID');
 		console.log(mintId);
 
 		// const fetchPromises = mintAddresses.map(async (mintAddress) => {
@@ -137,34 +137,33 @@ export const actions = {
 
 		// http://localhost:5173/project/nkIEZE/view/31?pk=HiCxdbmyx73QisDrPRBSTNmq6f6wn5Rib356aCQiipt6
 		for (let i = 0; i < mintAddresses.length; i++) {
-			console.log("LOOP INIT");
+			console.log('LOOP INIT');
 
 			const reqBody = JSON.stringify({
 				name: nftName,
-				description: nftDescription === null ? "" : nftDescription,
+				description: nftDescription === null ? '' : nftDescription,
 				image: imgUrl,
 				receiverAddress: mintAddresses[i],
 				attributes: {
 					view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
 				}
-			})
+			});
 
 			console.log(reqBody);
 
 			fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
-			    method: "POST",
-			    body: reqBody,
-			    headers: {
-			        accept: 'application/json',
-			        'content-type': 'application/json',
-			        authorization: `Bearer ${UNDERDOG_KEY}`
-			      }
-			}).then(async (r)=>{
-			    console.log(await r.json());
-			})
+				method: 'POST',
+				body: reqBody,
+				headers: {
+					accept: 'application/json',
+					'content-type': 'application/json',
+					authorization: `Bearer ${UNDERDOG_KEY}`
+				}
+			}).then(async (r) => {
+				console.log(await r.json());
+			});
 
-			console.log("LOOP DONE");
-
+			console.log('LOOP DONE');
 		}
 
 		console.log('RESPONSE RETURNED');
