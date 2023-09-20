@@ -13,16 +13,19 @@ UnderMail is still a WIP and supports only DevNet. Stay tuned for more updates a
 ## Features provided by UnderMail are as follows:
 - **Project Creation**: Users can create projects and mint as much as cNFTs as they want
 - **Bulk Minting**: Users can upload CSV file or paste in bulk addresses to mint cNFTs to.
-- **Analytics**: Each minted cNFT has a unique URL that the users can visit to mark the NFT as viewed. The viewes list can be seen on the dashboard.
+- **Analytics**: Each minted cNFT has a unique URL that the users can visit to mark the NFT as viewed. The viewes list can be seen on the dashboard. Each project has a view page that lists all availabe NFTs for user which get marked as viewed when user clicks on the nft.
 - **Mint History**: UnderMail shows you all of your mints in once place grouped per project.
 - **No Chain Complexities**: You don't have to pay in crypto or bothered with the chain in any manner, UnderMail does it all for you. You simple create projects and mint.
+
+### To get the wallet connection nft dashboard, goto a link with the following structure:
+`https://undermail-five.vercel.app/project/<proj-id>/view/wallet`
 
 ## WIP
 The following things are work-in-progress and will be available in upcoming releases of UnderMail. Stay tuned.
 
 - Embeddable HTML Components: Components to copy paste that can be added to your site to collect addresses to mint cNFTs to.
 - Integration with Google Sheets: Import addresses directly from your Google Sheets. This might also be an API & a Google Sheets addon to mint directly from Google Sheets. [Needs Dicsussion], feel free to hop in the discussion in the issue.
-- Advanced Analytics: Analytics information with user geographics, device type, user agent, and more.
+- Advanced Analytics: Analytics information with user geographics, device type, user agent, and more. [in beta]
 - Optional `Viewed` cNFT drop: Receivers get an aditional cNFT when they visit the analytics link in their primary cNFT.
 
 ## Contribution
