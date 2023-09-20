@@ -3,8 +3,10 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const { supabase } = locals;
-	
-	const {user: { email }} = await locals.getSession();
+
+	const {
+		user: { email }
+	} = await locals.getSession();
 
 	const { data: userData } = await supabase.from('users').select('id').eq('email', email);
 

@@ -59,7 +59,7 @@
 
 </script>
 
-<div on:click={fetchData}>
+<div on:click={fetchData} class="flex justify-end items-start p-12">
 	<WalletMultiButton />
 </div>
 

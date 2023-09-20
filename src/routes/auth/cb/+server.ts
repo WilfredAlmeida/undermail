@@ -29,12 +29,14 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
 			image_url: avatar_url
 		});
 
-		if(res.error && res.error.code==='23505'){
-			const res2 = await supabase.from('users').update({
-				image_url: avatar_url
-			}).eq("email", email)
+		if (res.error && res.error.code === '23505') {
+			const res2 = await supabase
+				.from('users')
+				.update({
+					image_url: avatar_url
+				})
+				.eq('email', email);
 			console.log(JSON.stringify(res2));
-			
 		}
 		console.log(res);
 	} catch (e) {

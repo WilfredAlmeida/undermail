@@ -15,7 +15,6 @@ export const load = async ({ url, locals }) => {
 
 	// console.log('$walletStore$: ', walletStore$);
 	// console.log('IN LOAD');
-	
 
 	return {
 		mints: []

@@ -29,11 +29,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// console.log("SESSION in hooks");
 		// console.log(session);
 
-		if(bypassAuthRoutes.includes(event.url.pathname.split("/")[3])){
-			console.log("BYPASS AUTH ROUTE IN HOOKS");
+		if (bypassAuthRoutes.includes(event.url.pathname.split('/')[3])) {
+			console.log('BYPASS AUTH ROUTE IN HOOKS');
 			return {};
 		}
-
 
 		if (!session) {
 			// the user is not signed in
