@@ -3,7 +3,7 @@ export const GET = async ({ locals, params }) => {
 	console.log('IN SERVER');
 	console.log(params);
 
-	const { address = null } = params;
+	const { address = null, projectId } = params;
 
 	if (address === null) {
 		return new Response(
@@ -20,7 +20,7 @@ export const GET = async ({ locals, params }) => {
 	}
 
 	// const res = await supabase.from("mints").select("*").filter('mint_addresses','contains',address);
-	const res = await supabase.from('mints').select('*').contains('mint_addresses', [address]);
+	const res = await supabase.from('mints').select('*').eq("project_id", projectId).contains('mint_addresses', [address]);
 
 	if (res.error || res.data.length === 0) {
 		console.log(res.error);

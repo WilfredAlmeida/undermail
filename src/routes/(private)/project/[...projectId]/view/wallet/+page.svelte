@@ -27,7 +27,7 @@
 
 	const fetchData = async () => {
 		if ($walletStore$.publicKey !== null) {
-			fetch(`/api/view/${$walletStore$.publicKey}`, {
+			fetch(`/api/view/${data.projectId}/${$walletStore$.publicKey}`, {
 				method: 'GET'
 			})
 				.then(async (res) => {
