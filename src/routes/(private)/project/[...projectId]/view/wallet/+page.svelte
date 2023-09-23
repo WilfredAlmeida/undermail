@@ -45,7 +45,7 @@
 	};
 
     const markAsViewed = async (mintId) =>{
-        fetch(`/api/view/${$walletStore$.publicKey}`,{
+        fetch(`/api/view/${data.projectId}/${$walletStore$.publicKey}`,{
             method: 'PATCH',
             body: JSON.stringify({
                 mintId: mintId,
@@ -56,6 +56,9 @@
             console.log(await res.json());
         }).catch((e)=>{console.log(e);})
     }
+
+	let mintTitle=null;
+	let mintDescription=null;
 
 </script>
 
@@ -88,6 +91,8 @@
 						alt="mint image"
 						class="w-full h-full object-contain m-0 p-0 hover:cursor-pointer"
 						on:click={() => {
+							mintTitle = mint.name;
+							mintDescription = mint.description || null
                             markAsViewed(mint.id)
 							const btn = document.getElementById('hiddenButton');
 							btn?.click();
@@ -108,9 +113,9 @@
 		</AlertDialog.Trigger>
 		<AlertDialog.Content class="bg-opacity-20 backdrop-blur-lg bg-green-40">
 			<AlertDialog.Header>
-				<AlertDialog.Title class="text-white">Marked as Viewed</AlertDialog.Title>
+				<AlertDialog.Title class="text-white">{mintTitle||"NFT Viewed"}</AlertDialog.Title>
 				<AlertDialog.Description class="text-green-400">
-                    This NFT was marked as Viewed
+                    {mintDescription || "No Description Provided"}
 				</AlertDialog.Description>
 			</AlertDialog.Header>
 			<AlertDialog.Footer>
