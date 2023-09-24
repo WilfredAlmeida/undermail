@@ -1,5 +1,6 @@
 import { UNDERDOG_KEY } from '$env/static/private';
 import { error, fail } from '@sveltejs/kit';
+import { NETWORK_URL } from '$lib/utils';
 
 export const actions = {
 	createMint: async ({ request, fetch, url, locals }) => {
@@ -151,7 +152,7 @@ export const actions = {
 
 			console.log(reqBody);
 
-			fetch(`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`, {
+			fetch(`${NETWORK_URL}/v2/projects/${underdogProjectId}/nfts`, {
 				method: 'POST',
 				body: reqBody,
 				headers: {

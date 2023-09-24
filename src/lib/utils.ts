@@ -2,6 +2,9 @@ import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { cubicOut } from 'svelte/easing';
 import type { TransitionConfig } from 'svelte/transition';
+import { PUBLIC_NETWORK, PUBLIC_DEVNET_URL, PUBLIC_MAINNET_URL } from '$env/static/public';
+
+export const NETWORK_URL = PUBLIC_NETWORK==="DEVNET" ? PUBLIC_DEVNET_URL:PUBLIC_MAINNET_URL;
 
 export const bypassAuthRoutes = ['view'];
 export const bypassLeftPaneRoutes = ['view'];

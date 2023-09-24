@@ -1,5 +1,6 @@
 import { error } from '@sveltejs/kit';
 import { UNDERDOG_KEY } from '$env/static/private';
+import { NETWORK_URL } from '$lib/utils';
 
 const allowedExtensions = /(\jpg|\jpeg)$/i;
 
@@ -61,7 +62,7 @@ export const POST = async ({ request, locals }) => {
 	console.log('IMGURL');
 	console.log(imgUrl);
 
-	const res = await fetch('https://dev.underdogprotocol.com/v2/projects', {
+	const res = await fetch(`${NETWORK_URL}/v2/projects`, {
 		method: 'POST',
 		body: JSON.stringify({
 			name: name,
