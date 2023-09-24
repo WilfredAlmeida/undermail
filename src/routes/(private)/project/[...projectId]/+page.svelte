@@ -3,14 +3,16 @@
     import { Label } from "$lib/components/ui/label";
 	export let data;
 
+	console.log(data.project);
+
 </script>
 
 <div class="ml-12 text-white">
 <Label class="font-bold text-6xl">{data.project.projectName}</Label>
-{#if data.project.projectDescription === "null"}
+{#if data.project.projectDescription === "null" || data.project.projectDescription===undefined}
 <h4 class="text-gray-400 italic">No description provided</h4>
 {:else}
-<h4 class="text-green-400">{data.project.description}</h4>
+<h4 class="text-green-400">{data.project.projectDescription}</h4>
 {/if}
 </div>
 
