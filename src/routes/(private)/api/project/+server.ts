@@ -77,7 +77,7 @@ export const POST = async ({ request, locals }) => {
 	});
 
 	const resJson = await res.json();
-
+	
 	if (res.status !== 202) {
 		return new Response(
 			JSON.stringify({

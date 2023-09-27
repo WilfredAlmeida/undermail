@@ -32,14 +32,15 @@ export const actions = {
 
 		if (csvFile && /(csv)$/i.exec(csvFile.type)) {
 			const csvData = await csvFile.text();
-			mintAddresses.push(...csvData.split(',').map((e) => e.replaceAll('\n', '')));
+			mintAddresses.push(...csvData.split(',').map((e) => e.replaceAll('\n', '').trim()));
 		}
 
 		if (publicKeys) {
-			mintAddresses.push(...publicKeys.split(',').map((e) => e.replaceAll('\n', '')));
+			mintAddresses.push(...publicKeys.split(',').map((e) => e.replaceAll('\n', '').trim()));
 		}
 
 		console.log(mintAddresses);
+console.log("PRINTED ADDRESSES");
 
 		if (mintAddresses.length === 0) {
 			return fail(400, { message: 'No mint address provided!' });
@@ -52,7 +53,7 @@ export const actions = {
 		if (dbRes!.data!.length === 0) {
 			return fail(404, { message: 'Project not found' });
 		}
-
+		console.log("DID IF");
 		const underdogProjectId = dbRes!.data![0].underdogId;
 		console.log(underdogProjectId);
 
@@ -89,56 +90,57 @@ export const actions = {
 		console.log('MINT ID');
 		console.log(mintId);
 
-		// const fetchPromises = mintAddresses.map(async (mintAddress) => {
-		// 	console.log('LOOP INIT');
+		const fetchPromises = mintAddresses.map(async (mintAddress) => {
+			console.log('LOOP INIT');
 
-		// 	const reqBody = JSON.stringify({
-		// 		name: nftName,
-		// 		description: nftDescription === null ? '' : nftDescription,
-		// 		image: imgUrl,
-		// 		receiverAddress: mintAddress,
-		// 		attributes: {
+			const reqBody = JSON.stringify({
+				name: nftName,
+				description: nftDescription === null ? '' : nftDescription,
+				image: imgUrl,
+				receiverAddress: mintAddress,
+				attributes: {
 
-		// 		}
-		// 	});
+				}
+			});
 
-		// try {
-		// 	const response = await fetch(
-		// 		`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`,
-		// 		{
-		// 			method: 'POST',
-		// 			body: reqBody,
-		// 			headers: {
-		// 				accept: 'application/json',
-		// 				'content-type': 'application/json',
-		// 				authorization: `Bearer ${UNDERDOG_KEY}`
-		// 			}
-		// 		}
-		// 	);
+		try {
+			const response = await fetch(
+				`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`,
+				{
+					method: 'POST',
+					body: reqBody,
+					headers: {
+						accept: 'application/json',
+						'content-type': 'application/json',
+						authorization: `Bearer ${UNDERDOG_KEY}`
+					}
+				}
+			);
 
-		// 	const data = await response.json();
-		// 	console.log(data);
+			const data = await response.json();
+			console.log(data);
 
-		// 	console.log('LOOP DONE');
-		// 	return data;
-		// } catch (error) {
-		// 	console.error(error);
-		// 	return null;
-		// }
-		// });
+			console.log('LOOP DONE');
+			return data;
+		} catch (error) {
+			console.error(error);
+			return null;
+		}
+		});
 
-		// Promise.all(fetchPromises)
-		// 	.then((results) => {
-		// 		// Handle the results here if needed
-		// 		console.log('All fetch calls completed:', results);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error('Error in Promise.all:', error);
-		// 	});
+		Promise.all(fetchPromises)
+			.then((results) => {
+				// Handle the results here if needed
+				console.log('All fetch calls completed:', results);
+			})
+			.catch((error) => {
+				console.error('Error in Promise.all:', error);
+			});
 
 		// http://localhost:5173/project/nkIEZE/view/31?pk=HiCxdbmyx73QisDrPRBSTNmq6f6wn5Rib356aCQiipt6
 		for (let i = 0; i < mintAddresses.length; i++) {
 			console.log('LOOP INIT');
+
 
 			const reqBody = JSON.stringify({
 				name: nftName,
@@ -146,6 +148,7 @@ export const actions = {
 				image: imgUrl,
 				receiverAddress: mintAddresses[i],
 				attributes: {
+					// TODO: UNSTRING mintId
 					view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
 				}
 			});
