@@ -147,7 +147,12 @@ console.log("PRINTED ADDRESSES");
 				description: nftDescription === null ? '' : nftDescription,
 				image: imgUrl,
 				receiverAddress: mintAddresses[i],
-				externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
+				externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
+				attributes: 
+					{
+						view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
+					}
+				
 			});
 
 			console.log(reqBody);
