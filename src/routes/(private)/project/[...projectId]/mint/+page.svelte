@@ -9,6 +9,15 @@
 	import { enhance } from '$app/forms';
 	export let form;
 
+	let isLoading = false;
+	// if(form && (form.success!==undefined||(form.message&&form.message.toString().trim().length > 0))){
+	// 	isLoading=false
+	// }
+
+	// if (form && form.message && form.message.toString().trim().length > 0){
+	// 	isLoading=false
+	// }
+
 	let name = '';
 	let description = '';
 
@@ -44,37 +53,14 @@
 		}
 	};
 
-	const submitForms = async ({ fetch }) => {
-		const name = document.getElementById('name');
-		const description = document.getElementById('description');
-		const nftImage = document.getElementById('nftImage');
-		const csvFile = document.getElementById('csvFile');
-		const publicKeys = document.getElementById('publicKeys');
-
-		console.log(name.value);
-		console.log(description.value);
-		console.log(nftImage.files[0]);
-		console.log(csvFile.files[0]);
-		console.log(publicKeys.value);
-
-		const formData = new FormData();
-
-		formData.append('nftName', name.value);
-		formData.append('nftDescription', name.value);
-		formData.append('nftImage', name.value);
-		formData.append('csvFile', name.value);
-		formData.append('mintAddress', name.value);
-
-		const res = await fetch('/api/mint', {
-			method: 'POST',
-			body: formData
-		});
-
-		const resJson = await res.json();
-
-		console.log('RESPONSE');
-		console.log(resJson);
-	};
+	$: {
+		if (form && form.message && form.message.toString().trim().length > 0) {
+			isLoading = false;
+		}
+		if (form && form.success !== undefined && form.success === true) {
+			isLoading = false;
+		}
+	}
 </script>
 
 <div class="flex justify-center items-center h-screen">
@@ -118,7 +104,14 @@
 					</div>
 
 					{#if form && form.message && form.message.toString().trim().length > 0}
-						<p class="text-red-400 pt-10">{form.message}</p>
+						<p
+							class="text-red-400 pt-10"
+							on:change={() => {
+								isLoading = false;
+							}}
+						>
+							{form.message}
+						</p>
 					{/if}
 				</div>
 			</Card.Content>
@@ -135,6 +128,10 @@
 					method="post"
 					action="?/createMint"
 					enctype="multipart/form-data"
+					on:submit={() => {
+						isLoading = true;
+						return true;
+					}}
 					use:enhance
 				>
 					<div class="grid w-full items-center gap-4 text-white">
@@ -169,11 +166,22 @@
 						</div>
 
 						<div class="flex items-end justify-end">
-							<Button
-								variant="default"
-								type="submit"
-								class="w-32 bg-green-400 hover:bg-green-400 hover:text-black">Mint</Button
-							>
+							{#if isLoading === true}
+								<div class="w-12 h-12 relative">
+									<div
+										class="absolute inset-0 animate-spin rounded-full border-t-4 border-green-400 border-solid"
+									/>
+								</div>
+							{:else if isLoading === false}
+								<Button
+									variant="default"
+									id="mintBtn"
+									type="submit"
+									class="w-32 bg-green-400 hover:bg-green-400 hover:text-black"
+								>
+									Mint
+								</Button>
+							{/if}
 						</div>
 					</div>
 				</form>
@@ -182,13 +190,20 @@
 	</div>
 </div>
 
-{#if form && form.success!==undefined && form.success===true}
-<div
-	id="notification"
-	class="fixed top-20 right-0 p-4 m-4 bg-green-400 text-black shadow-md rounded-lg"
->
-	<p class="text-lg font-bold text-center">Mint Initiated</p>
-	<p class="text-gray-900 italic">Goto history to check it out</p>
-
-</div>
+{#if form && form.success !== undefined && form.success === true}
+	<div
+		id="notification"
+		class="fixed top-20 right-0 p-4 m-4 bg-green-400 text-black shadow-md rounded-lg"
+	>
+		<p class="text-lg font-bold text-center">Mint Initiated</p>
+		<p class="text-gray-900 italic">Goto history to check it out</p>
+	</div>
+{:else if form && form.success !== undefined && form.success === false}
+	<div
+		id="notification"
+		class="fixed top-20 right-0 p-4 m-4 bg-red-400 text-black shadow-md rounded-lg"
+	>
+		<p class="text-lg font-bold text-center">Mint Failed</p>
+		<p class="text-gray-900 italic">Something went wrong</p>
+	</div>
 {/if}
