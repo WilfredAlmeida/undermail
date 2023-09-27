@@ -41,7 +41,7 @@ export const load = async ({ url, locals }) => {
 		})
 		.eq('id', mintId);
 
-	if (dbRes2.error || dbRes2.data.length === 0) {
+	if (dbRes2.error || dbRes2.status !== 204) {
 		console.log(JSON.stringify(dbRes));
 	}
 
