@@ -1,4 +1,6 @@
 <script>
+	import { goto } from '$app/navigation';
+
 
 import { Button } from '$lib/components/ui/button';
 
@@ -35,7 +37,9 @@ import { Button } from '$lib/components/ui/button';
                                 {/each}
 							</ul>
                             <div class="flex items-center justify-center mt-8">
-                                <Button variant="default" class="text-white text-2xl w-64 h-16 bg-green-400 hover:bg-fuchsia-400">${plan.price}</Button>
+                                <Button variant="default" class="text-white text-2xl w-64 h-16 bg-green-400 hover:bg-fuchsia-400" on:click={()=>{
+                                    goto("/account/billing")
+                                }}>${plan.price}</Button>
                               </div>
 						</div>
 					{/each}
