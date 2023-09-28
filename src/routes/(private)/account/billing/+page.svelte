@@ -1,5 +1,6 @@
 <script>
 	import { Button } from '$lib/components/ui/button';
+    import * as Sheet from "$lib/components/ui/sheet";
     export let data;
 
 </script>
@@ -18,9 +19,23 @@
 
                             <p class="text-green-400 text-4xl text-center pt-4">${data.credits}</p>
 
-                            <div class="flex items-center justify-center mt-8">
-                                <Button variant="default" class="text-white text-2xl w-64 h-16 bg-green-400 hover:bg-fuchsia-400">Add More</Button>
-                              </div>
+                              <div class="flex items-center justify-center mt-8">
+                              <Sheet.Root>
+                                <Sheet.Trigger>
+                                    <Button variant="default" class="text-white text-2xl w-64 h-16 bg-green-400 hover:bg-fuchsia-400">Add Credits</Button>
+                                </Sheet.Trigger>
+                                <Sheet.Content class="bg-black backdrop-blur-md">
+                                  <Sheet.Header>
+                                    <Sheet.Title class="text-3xl text-white">Add More Credits</Sheet.Title>
+                                    <Sheet.Description>
+                                      <p class="text-lg">Credits are non-refundable with a $5 minimum purchase</p>
+                                    </Sheet.Description>
+                                  </Sheet.Header>
+                                </Sheet.Content>
+                              </Sheet.Root>
+
+
+						</div>
 						</div>
 					
 				</div>
