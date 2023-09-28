@@ -5,15 +5,32 @@
 
 	let count = 5;
 
-	function increment() {
+	const increment = ()=> {
 		count += 5;
 	}
 
-	function decrement() {
+	const decrement = ()=> {
 		if (count > 5) {
 			count -= 1;
 		}
 	}
+
+    const doPayment = async ()=>{
+
+        fetch("/api/stripe/checkout",{
+            method: 'POST',
+            body: JSON.stringify({
+                credits: count
+            })
+        }).then(async(res)=>{
+
+            const json = await res.json()
+
+            window.location.replace(json.url)
+
+        })
+
+    }
 </script>
 
 <div class="flex items-center justify-center">
@@ -68,6 +85,7 @@
 											<div class="flex justify-center items-center pt-10">
 												<Button
 													variant="default"
+                                                    on:click={doPayment}
 													class="text-white text-2xl w-64 h-16 bg-green-400 hover:bg-fuchsia-400"
 													>Proceed to Pay</Button
 												>
