@@ -5,9 +5,13 @@ import { NETWORK_URL } from '$lib/utils';
 export const actions = {
 	createMint: async ({ request, fetch, url, locals }) => {
 		const { supabase } = locals;
-		console.log(url);
-		const projectId = url.pathname.split('/')[2];
 
+		const {
+			user: { email }
+		} = await locals.getSession();
+
+		const projectId = url.pathname.split('/')[2];
+		
 		const formData = await request.formData();
 
 		const nftName = formData.get('nameInput')?.toString();
@@ -46,6 +50,14 @@ console.log("PRINTED ADDRESSES");
 			return fail(400, { message: 'No mint address provided!' });
 		}
 
+		// Checking if credits balance exists
+		const {data } = await supabase.from("users").select("credits").eq("email", email)
+		const credits = data![0].credits;
+
+		if(credits < (mintAddresses.length*100)){
+			return fail(400, { message: 'Insufficient credits!' });
+		}
+
 		const dbRes = await supabase
 			.from('projects')
 			.select('underdogId:underdog_id')
@@ -57,7 +69,7 @@ console.log("PRINTED ADDRESSES");
 		const underdogProjectId = dbRes!.data![0].underdogId;
 		console.log(underdogProjectId);
 
-		const { data: uploadData, error } = await supabase.storage
+		let { data: uploadData, error } = await supabase.storage
 			.from('nft-images')
 			.upload(`${(Math.random() + 1).toString(36).substring(6)}.jpeg`, imgFile);
 
@@ -90,54 +102,6 @@ console.log("PRINTED ADDRESSES");
 		console.log('MINT ID');
 		console.log(mintId);
 
-		// const fetchPromises = mintAddresses.map(async (mintAddress) => {
-		// 	console.log('LOOP INIT');
-
-		// 	const reqBody = JSON.stringify({
-		// 		name: nftName,
-		// 		description: nftDescription === null ? '' : nftDescription,
-		// 		image: imgUrl,
-		// 		receiverAddress: mintAddress,
-		// 		attributes: {
-
-		// 		}
-		// 	});
-
-		// try {
-		// 	const response = await fetch(
-		// 		`https://dev.underdogprotocol.com/v2/projects/${underdogProjectId}/nfts`,
-		// 		{
-		// 			method: 'POST',
-		// 			body: reqBody,
-		// 			headers: {
-		// 				accept: 'application/json',
-		// 				'content-type': 'application/json',
-		// 				authorization: `Bearer ${UNDERDOG_KEY}`
-		// 			}
-		// 		}
-		// 	);
-
-		// 	const data = await response.json();
-		// 	console.log(data);
-
-		// 	console.log('LOOP DONE');
-		// 	return data;
-		// } catch (error) {
-		// 	console.error(error);
-		// 	return null;
-		// }
-		// });
-
-		// Promise.all(fetchPromises)
-		// 	.then((results) => {
-		// 		// Handle the results here if needed
-		// 		console.log('All fetch calls completed:', results);
-		// 	})
-		// 	.catch((error) => {
-		// 		console.error('Error in Promise.all:', error);
-		// 	});
-
-		// http://localhost:5173/project/nkIEZE/view/31?pk=HiCxdbmyx73QisDrPRBSTNmq6f6wn5Rib356aCQiipt6
 		for (let i = 0; i < mintAddresses.length; i++) {
 			console.log('LOOP INIT');
 
@@ -166,6 +130,7 @@ console.log("PRINTED ADDRESSES");
 					authorization: `Bearer ${UNDERDOG_KEY}`
 				}
 			}).then(async (r) => {
+				await supabase.rpc("decrement_credits", {useremail: email, tosubtract: 3})
 				console.log(await r.json());
 			});
 
