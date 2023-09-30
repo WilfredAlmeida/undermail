@@ -39,6 +39,7 @@
 		"@supabase/supabase-js": "^2.33.1",
 		"@svelte-on-solana/wallet-adapter-core": "1.0.11-alpha.0",
 		"@svelte-on-solana/wallet-adapter-ui": "1.0.21-alpha.0",
+		"@vercel/kv": "^0.2.3",
 		"bits-ui": "^0.5.3",
 		"clsx": "^2.0.0",
 		"lucide-svelte": "^0.269.0",
