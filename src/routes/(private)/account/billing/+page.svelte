@@ -42,7 +42,7 @@
 						class="border-green-400 border p-16 rounded-lg shadow-lg bg-opacity-20 backdrop-blur-lg bg-green-400"
 					>
 						<h2 class="text-6xl font-semibold text-white">Your Credits</h2>
-						<h3 class="text-white text-center pt-4">Available Credits</h3>
+						<h3 class="text-white text-center pt-4">Available Credits (In Cents)</h3>
 
 						<p class="text-green-400 text-4xl text-center pt-4">${data.credits}</p>
 
