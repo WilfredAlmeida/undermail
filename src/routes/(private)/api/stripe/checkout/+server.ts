@@ -28,9 +28,13 @@ export const POST = async ({ request, url }) => {
             quantity: 1,
         }],
         mode: "payment",
-        success_url: `${url.origin}`,
-        cancel_url: `${url.origin}`
+        success_url: `${url.origin}/api/stripe/success`,
+        cancel_url: `${url.origin}/api/stripe/cancel`
     })
+
+    console.log("SESSION");
+    console.log(JSON.stringify(session));
+    
 
     return new Response(JSON.stringify({url: session.url}), {status: 200})
 }
