@@ -40,7 +40,7 @@ export const POST = async ({ request, url, locals }) => {
     // console.log("SESSION");
     // console.log(JSON.stringify(session));
     
-    vercelDb.set(session.id, JSON.stringify({credits, email}))
+    await vercelDb.set(session.id, JSON.stringify({credits, email}))
 
     return new Response(JSON.stringify({url: session.url}), {status: 200})
 }
