@@ -10,8 +10,8 @@ import { Button } from '$lib/components/ui/button';
 			title: 'Pay for what you use',
 			subTexts: [
 				'Load your wallet with $5 min.',
-				'$0.03 per NFT',
-				'$0.70 per NFT Project (NFT Collection)',
+				'$0.03 per NFT (3 cents)',
+				'$0.70 per NFT Project (NFT Collection) (7 cents)',
 				'Analytics Dashboard',
 				'Free Customer Support'
 			],
