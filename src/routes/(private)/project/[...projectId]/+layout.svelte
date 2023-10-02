@@ -1,5 +1,5 @@
 <script>
-	import { Home, Send, History, Settings } from 'lucide-svelte';
+	import { Home, Send, History, BarChart } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import { page } from '$app/stores';
@@ -26,6 +26,12 @@
 			icon: History,
 			hoverText: 'Mint History',
 			action: `${$page.url.origin}/project/${data.projectId}/history`
+		},
+		{
+			itemId: 3,
+			icon: BarChart,
+			hoverText: 'Analytics',
+			action: `${$page.url.origin}/project/${data.projectId}/analytics`
 		}
 	];
 </script>

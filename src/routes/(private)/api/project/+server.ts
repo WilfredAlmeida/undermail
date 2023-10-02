@@ -1,10 +1,10 @@
 import { error } from '@sveltejs/kit';
-import { UNDERDOG_KEY } from '$env/static/private';
+import { PLAUSIBLE_KEY, UNDERDOG_KEY } from '$env/static/private';
 import { NETWORK_URL } from '$lib/utils';
 
 const allowedExtensions = /(\jpg|\jpeg)$/i;
 
-export const POST = async ({ request, locals }) => {
+export const POST = async ({ request, locals, url }) => {
 	console.log('IN API');
 	const { supabase } = locals;
 
@@ -134,6 +134,47 @@ export const POST = async ({ request, locals }) => {
 	});
 
 	console.log(res2);
+
+
+	// Create plausible site for analytics
+	const p1 = await fetch("https://plausible.io/api/v1/sites",{
+		method: 'POST',
+		body: JSON.stringify({
+			domain: `${url.host}/project/${projectId}/view/wallet`
+		}),
+		headers: {
+			authorization: `Bearer ${PLAUSIBLE_KEY}`
+		}
+	})
+	console.log(await p1.json());
+	// If site created on Plausible then create its shared link and store in db
+	if(p1.status===200){
+
+		const res = await fetch("https://plausible.io/api/v1/sites/shared-links",{
+			method: 'PUT',
+			body: JSON.stringify({
+				site_id: `${url.host}/project/${projectId}/view/wallet`,
+				name: projectId
+			})
+		})
+		
+		if(res.status){
+			const {url} = await res.json()
+
+			await supabase.from("projects").update({
+				plausible_url: url
+			}).eq("id", projectId)
+
+		}
+
+		console.log(JSON.stringify(res));
+	}
+	else{
+		console.log(await p1.json());
+		
+		console.log(p1.status);
+	}
+
 
 	return new Response(
 		JSON.stringify({

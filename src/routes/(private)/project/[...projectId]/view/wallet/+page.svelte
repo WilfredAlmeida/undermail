@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
 	import { WalletMultiButton } from '@svelte-on-solana/wallet-adapter-ui';
 	import { walletStore as walletStore$ } from '@svelte-on-solana/wallet-adapter-core';
 
@@ -6,8 +8,8 @@
 	import * as Card from '$lib/components/ui/card';
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
 	import Button from '$components/ui/button/button.svelte';
-	import * as Table from '$lib/components/ui/table';
-	import * as Tabs from '$lib/components/ui/tabs';
+	import { page } from '$app/stores';
+	
 
 	export let data;
 
@@ -59,13 +61,25 @@
 
 	let mintTitle=null;
 	let mintDescription=null;
-
+console.log($page.url);
 </script>
+
+<svelte:head>
+	<script defer data-domain="{$page.url.host}/project/{data.projectId}/view/wallet" src="https://plausible.io/js/script.js"/>
+</svelte:head>
+
 
 <div on:click={fetchData} class="flex justify-end items-start p-12">
 	<WalletMultiButton />
 </div>
 
+{#if !data || !data.mints || data.mints.length===0}
+
+<div class="flex items-center justify-center">
+	<h2 class="text-white">No NFTs Found!!!</h2>
+</div>
+
+{:else}
 <div class="flex items-center justify-center">
 	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto w-full max-w-screen-lg p-8">
 		{#each data.mints as mint (mint.id)}
@@ -105,6 +119,9 @@
 		{/each}
 	</div>
 </div>
+
+{/if}
+
 
 <div class="overflow-y-auto max-h-[300px]">
 	<AlertDialog.Root>
