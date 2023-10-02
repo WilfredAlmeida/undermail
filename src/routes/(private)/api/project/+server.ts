@@ -150,11 +150,15 @@ export const POST = async ({ request, locals, url }) => {
 
 
 	// Create plausible site for analytics
+	const formData = new FormData();
+	formData.append('domain', `${projectId}`);
+
 	const p1 = await fetch("https://plausible.io/api/v1/sites",{
 		method: 'POST',
-		body: JSON.stringify({
-			domain: `${url.host}/project/${projectId}/view/wallet`
-		}),
+		body: formData,
+		// body: JSON.stringify({
+		// 	domain: `${url.host}/project/${projectId}/view/wallet`
+		// }),
 		headers: {
 			authorization: `Bearer ${PLAUSIBLE_KEY}`
 		}
@@ -163,12 +167,15 @@ export const POST = async ({ request, locals, url }) => {
 	// If site created on Plausible then create its shared link and store in db
 	if(p1.status===200){
 
+		const formData2 = new FormData();
+		formData2.append('site_id', `${projectId}`);
+		formData2.append('name', `${projectId}`);
 		const res = await fetch("https://plausible.io/api/v1/sites/shared-links",{
 			method: 'PUT',
-			body: JSON.stringify({
-				site_id: `${url.host}/project/${projectId}/view/wallet`,
-				name: projectId
-			})
+			body: formData2,
+			headers: {
+				authorization: `Bearer ${PLAUSIBLE_KEY}`
+			}
 		})
 		
 		if(res.status){
@@ -180,7 +187,7 @@ export const POST = async ({ request, locals, url }) => {
 
 		}
 
-		console.log(JSON.stringify(res));
+		console.log(await res.json());
 	}
 	else{
 		console.log(await p1.json());
