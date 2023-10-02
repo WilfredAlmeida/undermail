@@ -68,6 +68,11 @@ export const actions = {
 
 		console.log('RESPONSE');
 
-		console.log(await res.json());
+		const responseBody = await res.json()
+		console.log(responseBody);
+
+		if(responseBody.error){
+			return fail(400, { message: responseBody.error[0].message });
+		}
 	}
 };

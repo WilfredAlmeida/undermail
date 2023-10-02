@@ -5,22 +5,24 @@ export const load = async ({ url, locals }) => {
 
 	const projectId = url.pathname.split('/')[2];
 
-	// const dbRes = await supabase.from('mints').select('*').eq('project_id', projectId);
+	const dbRes = await supabase.from('mints').select('*').eq('project_id', projectId);
 
-	// if (dbRes!.data!.length === 0) {
-	// 	return {
-	// 		error: "No mints found or project doesn't exist"
-	// 	};
-	// }
+	if (dbRes!.data!.length === 0) {
+		return {
+			error: "No mints found or project doesn't exist"
+		};
+	}
 
-	// console.log('$walletStore$: ', walletStore$);
-	// console.log('IN LOAD');
+	console.log('$walletStore$: ', walletStore$);
+	console.log('IN LOAD');
+
+	// return {
+	// 	mints: [],
+	// 	projectId
+	// };
 
 	return {
-		mints: [],
-		projectId
+		projectId,
+		mints: dbRes!.data!.reverse()
 	};
-	// return {
-	// 	mints: dbRes!.data!.reverse()
-	// };
 };

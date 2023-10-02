@@ -7,7 +7,7 @@ export const load = async ({ url, locals }) => {
 
 	const dbRes = await supabase
 		.from('projects')
-		.select('underdogId:underdog_id')
+		.select('underdogId:underdog_id,plausibleUrl:plausible_url')
 		.eq('id', projectId);
 	if (dbRes.data.length === 0) {
 		throw redirect(307, `${url.origin}/404`);
