@@ -2,7 +2,7 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as Popover from '$lib/components/ui/popover';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { LogOut, Settings, User } from 'lucide-svelte';
+	import { LogOut, Settings, User, DollarSign } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { redirect } from '@sveltejs/kit';
 	import { goto } from '$app/navigation';
@@ -41,6 +41,10 @@
 				<DropdownMenu.Group>
 					<DropdownMenu.Label>My Account</DropdownMenu.Label>
 					<DropdownMenu.Separator />
+					<DropdownMenu.Item on:click={()=>{goto(`/account/billing`)}}>
+						<DollarSign class="mr-2 h-4 w-4" />
+						<span>Billing</span>
+					</DropdownMenu.Item>
 					<DropdownMenu.Item on:click={logOut}>
 						<LogOut class="mr-2 h-4 w-4" />
 						<span>Log out</span>
