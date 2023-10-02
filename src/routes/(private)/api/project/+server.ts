@@ -123,7 +123,7 @@ export const POST = async ({ request, locals, url }) => {
 	const userIdInDb = data![0].id;
 	const credits = data![0].credits
 
-	if(credits < 700){
+	if(credits < 7){
 		return new Response(
 			JSON.stringify({
 				status: 'INSUFFICIENT_CREDITS',
