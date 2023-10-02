@@ -36,6 +36,49 @@ export const POST = async ({ request, locals, url }) => {
 		);
 	}
 
+	const {
+		data: {
+			/* @ts-ignore */
+			user: { email }
+		}
+	} = await supabase.auth.getUser();
+
+	const { data } = await supabase.from('users').select('id, credits').eq('email', email);
+
+	if (data!.length === 0) {
+		return new Response(
+			JSON.stringify({
+				status: 'USER_NOT_FOUND',
+				data: null,
+				error: [
+					{
+						message: 'User not found'
+					}
+				]
+			}),
+			{
+				status: 404,
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
+	}
+	const userIdInDb = data![0].id;
+	const credits = data![0].credits
+
+	if(credits < 7){
+		return new Response(
+			JSON.stringify({
+				status: 'INSUFFICIENT_CREDITS',
+				data: null,
+				error: [{message: "Insufficient Credits"}]
+			}),
+			{
+				status: 400,
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
+	}
+
 	const { data: uploadData, error } = await supabase.storage
 		.from('project-images')
 		.upload(`${(Math.random() + 1).toString(36).substring(6)}.jpeg`, imageFile);
@@ -94,48 +137,7 @@ export const POST = async ({ request, locals, url }) => {
 
 	const underdogProjectId = resJson.projectId;
 	const projectId = generateAlphanumericString(6);
-	const {
-		data: {
-			/* @ts-ignore */
-			user: { email }
-		}
-	} = await supabase.auth.getUser();
 
-	const { data } = await supabase.from('users').select('id, credits').eq('email', email);
-
-	if (data!.length === 0) {
-		return new Response(
-			JSON.stringify({
-				status: 'USER_NOT_FOUND',
-				data: null,
-				error: [
-					{
-						message: 'User not found'
-					}
-				]
-			}),
-			{
-				status: 404,
-				headers: { 'Content-Type': 'application/json' }
-			}
-		);
-	}
-	const userIdInDb = data![0].id;
-	const credits = data![0].credits
-
-	if(credits < 7){
-		return new Response(
-			JSON.stringify({
-				status: 'INSUFFICIENT_CREDITS',
-				data: null,
-				error: [{message: "Insufficient Credits"}]
-			}),
-			{
-				status: 400,
-				headers: { 'Content-Type': 'application/json' }
-			}
-		);
-	}
 
 	const res2 = await supabase.from('projects').insert({
 		id: projectId,
@@ -150,25 +152,29 @@ export const POST = async ({ request, locals, url }) => {
 
 
 	// Create plausible site for analytics
+	const formData = new FormData();
+	formData.append('domain', projectId.toString());
+try{
 	const p1 = await fetch("https://plausible.io/api/v1/sites",{
 		method: 'POST',
-		body: JSON.stringify({
-			domain: `${url.host}/project/${projectId}/view/wallet`
-		}),
+		body: formData,
 		headers: {
 			authorization: `Bearer ${PLAUSIBLE_KEY}`
 		}
 	})
-	console.log(await p1.json());
+	
 	// If site created on Plausible then create its shared link and store in db
 	if(p1.status===200){
 
+		const formData2 = new FormData();
+		formData2.append('site_id', `${projectId}`);
+		formData2.append('name', `${projectId}`);
 		const res = await fetch("https://plausible.io/api/v1/sites/shared-links",{
 			method: 'PUT',
-			body: JSON.stringify({
-				site_id: `${url.host}/project/${projectId}/view/wallet`,
-				name: projectId
-			})
+			body: formData2,
+			headers: {
+				authorization: `Bearer ${PLAUSIBLE_KEY}`
+			}
 		})
 		
 		if(res.status){
@@ -180,14 +186,17 @@ export const POST = async ({ request, locals, url }) => {
 
 		}
 
-		console.log(JSON.stringify(res));
+		console.log(await res.json());
 	}
 	else{
-		console.log(await p1.json());
+		// console.log(await p1.json());
 		
-		console.log(p1.status);
+		// console.log(p1.status);
 	}
-
+}catch(e){}
+	const d2 = await supabase.rpc("decrement_credits",{useremail: email, tosubtract: 7})
+	console.log(JSON.stringify(d2));
+	
 
 	return new Response(
 		JSON.stringify({

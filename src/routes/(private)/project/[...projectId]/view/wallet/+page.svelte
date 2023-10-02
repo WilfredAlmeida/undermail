@@ -65,7 +65,7 @@ console.log($page.url);
 </script>
 
 <svelte:head>
-	<script defer data-domain="{$page.url.host}/project/{data.projectId}/view/wallet" src="https://plausible.io/js/script.js"/>
+	<script defer data-domain="{data.projectId}" src="https://plausible.io/js/script.js"/>
 </svelte:head>
 
 
