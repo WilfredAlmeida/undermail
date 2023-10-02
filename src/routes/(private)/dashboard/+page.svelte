@@ -190,3 +190,14 @@
 		{/each}
 	</div>
 </main>
+
+
+{#if form && form.message}
+	<div
+		id="notification"
+		class="fixed top-40 right-0 p-4 m-4 bg-red-400 text-black shadow-md rounded-lg"
+	>
+		<p class="text-lg font-bold text-center">Error Occurred</p>
+		<p class="text-gray-900 italic">{form.message}</p>
+	</div>
+{/if}

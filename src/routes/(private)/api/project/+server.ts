@@ -101,7 +101,7 @@ export const POST = async ({ request, locals, url }) => {
 		}
 	} = await supabase.auth.getUser();
 
-	const { data } = await supabase.from('users').select('id').eq('email', email);
+	const { data } = await supabase.from('users').select('id, credits').eq('email', email);
 
 	if (data!.length === 0) {
 		return new Response(
@@ -121,8 +121,21 @@ export const POST = async ({ request, locals, url }) => {
 		);
 	}
 	const userIdInDb = data![0].id;
+	const credits = data![0].credits
 
-	console.log(userIdInDb);
+	if(credits < 700){
+		return new Response(
+			JSON.stringify({
+				status: 'INSUFFICIENT_CREDITS',
+				data: null,
+				error: [{message: "Insufficient Credits"}]
+			}),
+			{
+				status: 400,
+				headers: { 'Content-Type': 'application/json' }
+			}
+		);
+	}
 
 	const res2 = await supabase.from('projects').insert({
 		id: projectId,
