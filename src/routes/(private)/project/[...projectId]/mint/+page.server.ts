@@ -21,6 +21,8 @@ export const actions = {
 		const csvFile = formData.get('csvFile') as File;
 		let publicKeys: String | undefined | null = formData.get('publicKeys')?.toString();
 
+		let isGif = false;
+
 		nftDescription = nftDescription?.trim() === '' ? null : nftDescription;
 		publicKeys = publicKeys?.trim() === '' ? null : publicKeys;
 
@@ -28,8 +30,8 @@ export const actions = {
 			return fail(400, { message: 'Invalid name value' });
 		}
 
-		if (!imgFile || !/(\jpg|\jpeg)$/i.exec(imgFile.type)) {
-			return fail(400, { message: 'Image is required & only JPG/JPEG allowed' });
+		if (!imgFile || !/(\jpg|\jpeg|\gif)$/i.exec(imgFile.type)) {
+			return fail(400, { message: 'Image is required & only JPG/JPEG/GIF allowed' });
 		}
 
 		const mintAddresses: String[] = [];
@@ -69,9 +71,14 @@ console.log("PRINTED ADDRESSES");
 		const underdogProjectId = dbRes!.data![0].underdogId;
 		console.log(underdogProjectId);
 
+		
+		isGif = imgFile.type === 'image/gif';
+		const fileName = `${(Math.random() + 1).toString(36).substring(6)}.${isGif?'gif':'jpg'}`;
+
+
 		let { data: uploadData, error } = await supabase.storage
 			.from('nft-images')
-			.upload(`${(Math.random() + 1).toString(36).substring(6)}.jpeg`, imgFile);
+			.upload(fileName, imgFile);
 
 		if (error) {
 			console.log(error);
@@ -110,6 +117,7 @@ console.log("PRINTED ADDRESSES");
 				name: nftName,
 				description: nftDescription === null ? '' : nftDescription,
 				image: imgUrl,
+				animationUrl: isGif ? imgUrl : "",
 				receiverAddress: mintAddresses[i],
 				externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
 				attributes: 
