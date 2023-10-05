@@ -75,6 +75,7 @@ console.log("PRINTED ADDRESSES");
 		isGif = imgFile.type === 'image/gif';
 		const fileName = `${(Math.random() + 1).toString(36).substring(6)}.${isGif?'gif':'jpg'}`;
 
+
 		let { data: uploadData, error } = await supabase.storage
 			.from('nft-images')
 			.upload(fileName, imgFile);
