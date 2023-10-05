@@ -27,11 +27,11 @@
 		var sourceFile = document.getElementById('sourceNftImage');
 		var targetFile = document.getElementById('targetNftImage');
 
-		var allowedExtensions = /(\.jpg|\.jpeg)$/i;
+		var allowedExtensions = /(\.jpg|\.jpeg|\.gif)$/i;
 
 		var filePath = sourceFile.value;
 		if (!allowedExtensions.exec(filePath)) {
-			alert(`Only JPG/JPEG Allowed`);
+			alert(`Only JPG/JPEG/GIF Allowed`);
 			sourceFile.value = '';
 			return false;
 		}
