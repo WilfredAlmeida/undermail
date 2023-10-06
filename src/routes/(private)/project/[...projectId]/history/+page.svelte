@@ -30,6 +30,16 @@
 				</Card.Header>
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<Card.Content class="h-4/5 overflow-hidden pb-10">
+
+					<!-- svelte-ignore a11y-media-has-caption -->
+					{#if /mp4/.test(mint.image_url)}
+						<!-- svelte-ignore a11y-media-has-caption -->
+						<video src={mint.image_url}
+						autoplay loop muted
+						class="w-full h-full object-contain m-0 p-0 hover:cursor-pointer"
+						/>
+					{:else}
+
 					<!-- svelte-ignore a11y-img-redundant-alt -->
 					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 					<img
@@ -44,6 +54,7 @@
 							console.log(mintAddresses);
 						}}
 					/>
+					{/if}
 					<p class="text-green-400 text-right">{mint.created_at}</p>
 				</Card.Content>
 			</Card.Root>

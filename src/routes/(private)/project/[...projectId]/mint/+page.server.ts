@@ -30,7 +30,7 @@ export const actions = {
 			return fail(400, { message: 'Invalid name value' });
 		}
 
-		if (!imgFile || !/(\jpg|\jpeg|\gif)$/i.exec(imgFile.type)) {
+		if (!imgFile || !/(\jpg|\jpeg|\gif|\mp4)$/i.exec(imgFile.type)) {
 			return fail(400, { message: 'Image is required & only JPG/JPEG/GIF allowed' });
 		}
 
@@ -72,8 +72,27 @@ console.log("PRINTED ADDRESSES");
 		console.log(underdogProjectId);
 
 		
-		isGif = imgFile.type === 'image/gif';
-		const fileName = `${(Math.random() + 1).toString(36).substring(6)}.${isGif?'gif':'jpg'}`;
+		isGif = /gif|mp4/.test(imgFile.type);
+		let fileExtension = "jpg";
+
+		switch (imgFile.type) {
+			case "image/jpeg":
+			case "image/jpg":
+				fileExtension = "jpg";
+				break;
+			case "image/gif":
+				fileExtension = "gif";
+				break;
+			case "video/mp4":
+				fileExtension = "mp4";
+				break;
+			default:
+				fileExtension = "jpg";
+				break;
+		}
+
+		// isGif = imgFile.type === 'image/gif';
+		const fileName = `${(Math.random() + 1).toString(36).substring(6)}.${fileExtension}`;
 
 
 		let { data: uploadData, error } = await supabase.storage
