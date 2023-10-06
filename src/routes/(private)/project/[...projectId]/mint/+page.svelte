@@ -27,7 +27,7 @@
 		var sourceFile = document.getElementById('sourceNftImage');
 		var targetFile = document.getElementById('targetNftImage');
 
-		var allowedExtensions = /(\.jpg|\.jpeg|\.gif)$/i;
+		var allowedExtensions = /(\.jpg|\.jpeg|\.gif|\.mp4)$/i;
 
 		var filePath = sourceFile.value;
 		if (!allowedExtensions.exec(filePath)) {
