@@ -1,9 +1,12 @@
 <script>
 	import { Button } from '$lib/components/ui/button';
 	import * as Sheet from '$lib/components/ui/sheet';
+	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	import * as Card from '$lib/components/ui/card';
 	export let data;
 
 	let count = 5;
+	let showDialog = false;
 
 	const increment = ()=> {
 		count += 5;
@@ -17,18 +20,21 @@
 
     const doPayment = async ()=>{
 
-        fetch("/api/stripe/checkout",{
-            method: 'POST',
-            body: JSON.stringify({
-                credits: count
-            })
-        }).then(async(res)=>{
+        // fetch("/api/stripe/checkout",{
+        //     method: 'POST',
+        //     body: JSON.stringify({
+        //         credits: count
+        //     })
+        // }).then(async(res)=>{
 
-            const json = await res.json()
+        //     const json = await res.json()
 
-            window.location.replace(json.url)
+        //     window.location.replace(json.url)
 
-        })
+        // })
+
+		showDialog = true;
+		
 
     }
 </script>
@@ -101,3 +107,22 @@
 		</div>
 	</section>
 </div>
+
+<AlertDialog.Root open={showDialog}>
+	<AlertDialog.Trigger asChild let:builder>
+	</AlertDialog.Trigger>
+	<AlertDialog.Content class="bg-opacity-20 backdrop-blur-lg bg-green-40">
+		<AlertDialog.Header>
+			<AlertDialog.Description>
+				<Card.Root class="bg-opacity-20 backdrop-blur-lg bg-green-40">
+					<Card.Header>
+						<Card.Title class="text-white">Get In Touch</Card.Title>
+					</Card.Header>
+					<Card.Content>
+						<p class="text-white text-4xl">Please <a href="mailto:wilfred@wilfredalmeida.com" class="underline" target="_blank">email</a> or <a href="https://twitter.com/WilfredAlmeida_" class="underline" target="_blank">DM</a> Wilfred for credits</p>
+					</Card.Content>
+				</Card.Root>
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+	</AlertDialog.Content>
+</AlertDialog.Root>
