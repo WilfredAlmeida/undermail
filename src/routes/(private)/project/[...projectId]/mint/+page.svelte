@@ -132,6 +132,11 @@
 						isLoading = true;
 						return true;
 					}}
+					on:error={(e)=>{
+						console.log('ERROR');
+						console.log(e);
+						alert(e)
+					}}
 					use:enhance
 				>
 					<div class="grid w-full items-center gap-4 text-white">

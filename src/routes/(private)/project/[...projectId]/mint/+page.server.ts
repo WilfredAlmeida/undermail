@@ -4,6 +4,9 @@ import { NETWORK_URL } from '$lib/utils';
 
 export const actions = {
 	createMint: async ({ request, fetch, url, locals }) => {
+
+		return fail(413, { message: 'File too large' })
+
 		const { supabase } = locals;
 
 		const {
