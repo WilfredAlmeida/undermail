@@ -6,7 +6,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { enhance } from '$app/forms';
+	import { enhance, applyAction  } from '$app/forms';
 	export let form;
 
 	let isLoading = false;
@@ -167,17 +167,14 @@
 						return async ({ result }) => {
 							console.log('RESULT');
 							console.log(result);
-							
-							if(result.status >= 400){
-								alert(result.data.message)
-								isLoading = false;
-								return
-							}
+						
 							if(result.error && result.error.code==413){
 								alert("File too big. Should be less than 3 MB")
 								isLoading = false;
 								return
 							}
+
+							await applyAction(result);
 						};
 					}}
 				>
