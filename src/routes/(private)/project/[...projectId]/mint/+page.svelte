@@ -173,6 +173,11 @@
 								isLoading = false;
 								return
 							}
+							if(result.error && result.error.code==413){
+								alert("File too big. Should be less than 3 MB")
+								isLoading = false;
+								return
+							}
 						};
 					}}
 				>
