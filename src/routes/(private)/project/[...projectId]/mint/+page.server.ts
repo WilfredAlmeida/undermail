@@ -128,41 +128,77 @@ console.log("PRINTED ADDRESSES");
 		console.log('MINT ID');
 		console.log(mintId);
 
-		for (let i = 0; i < mintAddresses.length; i++) {
-			console.log('LOOP INIT');
+		const batch = mintAddresses.map((e) => {
+			return { receiverAddress: e.replace(/(\r\n|\n|\r)/gm, "") }
+		})
+console.log("BATCH");
+console.log(batch);
+
+		const reqBody = JSON.stringify({
+			name: nftName,
+			description: nftDescription === null ? '' : nftDescription,
+			image: imgUrl,
+			animationUrl: isGif ? imgUrl : "",
+			// receiverAddress: mintAddresses[i],
+			// externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
+			// attributes: 
+			// 	{
+			// 		view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
+			// 	}
+			
+			batch: batch
+		});
+console.log(reqBody);
+
+		fetch(`${NETWORK_URL}/v2/projects/${underdogProjectId}/nfts/batch`, {
+			method: 'POST',
+			body: reqBody,
+			headers: {
+				accept: 'application/json',
+				'content-type': 'application/json',
+				authorization: `Bearer ${UNDERDOG_KEY}`
+			}
+		}).then(async (r) => {
+			await supabase.rpc("decrement_credits", {useremail: email, tosubtract: mintAddresses.length * 3})
+			console.log(await r.json());
+		});
+
+		// for (let i = 0; i < mintAddresses.length; i++) {
+		// 	console.log('LOOP INIT');
 
 
-			const reqBody = JSON.stringify({
-				name: nftName,
-				description: nftDescription === null ? '' : nftDescription,
-				image: imgUrl,
-				animationUrl: isGif ? imgUrl : "",
-				receiverAddress: mintAddresses[i],
-				externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
-				attributes: 
-					{
-						view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
-					}
+			
+			// const reqBody = JSON.stringify({
+			// 	name: nftName,
+			// 	description: nftDescription === null ? '' : nftDescription,
+			// 	image: imgUrl,
+			// 	animationUrl: isGif ? imgUrl : "",
+			// 	receiverAddress: mintAddresses[i],
+			// 	externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
+			// 	attributes: 
+			// 		{
+			// 			view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`
+			// 		}
 				
-			});
+			// });
 
-			console.log(reqBody);
+			// console.log(reqBody);
 
-			fetch(`${NETWORK_URL}/v2/projects/${underdogProjectId}/nfts`, {
-				method: 'POST',
-				body: reqBody,
-				headers: {
-					accept: 'application/json',
-					'content-type': 'application/json',
-					authorization: `Bearer ${UNDERDOG_KEY}`
-				}
-			}).then(async (r) => {
-				await supabase.rpc("decrement_credits", {useremail: email, tosubtract: 3})
-				console.log(await r.json());
-			});
+			// fetch(`${NETWORK_URL}/v2/projects/${underdogProjectId}/nfts`, {
+			// 	method: 'POST',
+			// 	body: reqBody,
+			// 	headers: {
+			// 		accept: 'application/json',
+			// 		'content-type': 'application/json',
+			// 		authorization: `Bearer ${UNDERDOG_KEY}`
+			// 	}
+			// }).then(async (r) => {
+			// 	await supabase.rpc("decrement_credits", {useremail: email, tosubtract: 3})
+			// 	console.log(await r.json());
+			// });
 
-			console.log('LOOP DONE');
-		}
+		// 	console.log('LOOP DONE');
+		// }
 
 		console.log('RESPONSE RETURNED');
 
