@@ -61,6 +61,29 @@
 			isLoading = false;
 		}
 	}
+
+	async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    try {
+      const response = await fetch('/createMint', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.status === 413) {
+        alert('Request entity too large. Please try again with a smaller file.');
+      } else if (response.ok) {
+        // Handle success here
+      } else {
+        // Handle other errors here
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
 </script>
 
 <div class="flex justify-center items-center h-screen">
@@ -130,14 +153,28 @@
 					enctype="multipart/form-data"
 					on:submit={() => {
 						isLoading = true;
-						return true;
+						handleSubmit();
+						// return true;
+						// action="?/createMint"
 					}}
 					on:error={(e)=>{
 						console.log('ERROR');
 						console.log(e);
 						alert(e)
 					}}
-					use:enhance
+					use:enhance={({ formElement, formData, action, cancel }) => {
+
+						return async ({ result }) => {
+							console.log('RESULT');
+							console.log(result);
+							
+							if(result.status >= 400){
+								alert(result.data.message)
+								isLoading = false;
+								return
+							}
+						};
+					}}
 				>
 					<div class="grid w-full items-center gap-4 text-white">
 						<div class="flex flex-col space-y-1.5">
