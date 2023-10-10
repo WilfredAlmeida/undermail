@@ -1,6 +1,7 @@
 import { UNDERDOG_KEY } from '$env/static/private';
 import { error, fail } from '@sveltejs/kit';
 import { NETWORK_URL } from '$lib/utils';
+import { PublicKey } from "@solana/web3.js";
 
 export const actions = {
 	createMint: async ({ request, fetch, url, locals }) => {
@@ -56,7 +57,7 @@ console.log("PRINTED ADDRESSES");
 		const {data } = await supabase.from("users").select("credits").eq("email", email)
 		const credits = data![0].credits;
 
-		if(credits < (mintAddresses.length*100)){
+		if(credits < (mintAddresses.length*3)){
 			return fail(400, { message: 'Insufficient credits!' });
 		}
 
@@ -128,11 +129,26 @@ console.log("PRINTED ADDRESSES");
 		console.log('MINT ID');
 		console.log(mintId);
 
-		const batch = mintAddresses.map((e) => {
-			return { receiverAddress: e.replace(/(\r\n|\n|\r)/gm, "") }
-		})
-console.log("BATCH");
-console.log(batch);
+		const batch: any = []
+		for(let i=0;i<mintAddresses.length;i++) {
+
+			const addr = mintAddresses[i].replace(/(\r\n|\n|\r)/gm, "");
+
+			try{
+				new PublicKey(addr);
+			} catch(e){
+				return fail(400, { message: `Address ${addr} on line ${i} invalid` })
+			}
+
+			batch.push({
+				receiverAddress: addr,
+				externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
+				attributes: {
+					view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${addr}`
+				}
+			})
+			
+		}
 
 		const reqBody = JSON.stringify({
 			name: nftName,
