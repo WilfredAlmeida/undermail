@@ -140,7 +140,14 @@ console.log("PRINTED ADDRESSES");
 				return fail(400, { message: `Address ${addr} on line ${i} invalid` })
 			}
 
-			batch.push({ receiverAddress: addr})
+			batch.push({
+				receiverAddress: addr,
+				externalUrl: `${url.origin}/project/${projectId}/view/${mintId}?pk=${mintAddresses[i]}`,
+				attributes: {
+					view: `${url.origin}/project/${projectId}/view/${mintId}?pk=${addr}`
+				}
+			})
+			
 		}
 
 		const reqBody = JSON.stringify({
