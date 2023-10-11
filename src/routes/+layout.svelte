@@ -36,11 +36,11 @@
 <svelte:head>
 
 <meta name="description" content="UnderMail: MailChimp of Solana | Bulk Mint and get Analytics for NFTs | UnderDog Protocol | Solana cNFT | NFT" />
-<meta name="image" content="%sveltekit.assets%/og.jpg" />
+<meta name="image" content="/og.jpg" />
 
 <meta property="og:title" content="UnderMail" />
 <meta property="og:description" content="UnderMail: MailChimp of Solana | Bulk Mint and get Analytics for NFTs | UnderDog Protocol | Solana cNFT | NFT" />
-<meta property="og:image" content="%sveltekit.assets%/og.jpg" />
+<meta property="og:image" content="og.jpg" />
 <meta property="og:url" content="https://undermail.live" />
 <meta property="og:type" content="website" />
 
@@ -48,7 +48,7 @@
 <meta name="twitter:creator" content="undermail_" />
 <meta name="twitter:title" content="UnderMail" />
 <meta name="twitter:description" content="UnderMail: MailChimp of Solana | Bulk Mint and get Analytics for NFTs | UnderDog Protocol | Solana cNFT | NFT" />
-<meta name="twitter:image" content="%sveltekit.assets%/og.jpg" />
+<meta name="twitter:image" content="/og.jpg" />
 
 <meta name="keywords" content="UnderMail, Solana, Mint NFTs, cNFT, Compressed NFT, Solana Compressed NFT, Mint NFT, Mint cNFT, Mint Compresses NFT Solana, bulk, bulk mint nft, bulk mint cft, bulk mint compressed nft, nft analytics, solana analytics, cnft analytics, solana cnft analytics"/>
 
