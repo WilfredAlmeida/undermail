@@ -31,6 +31,10 @@ export const actions = {
 			return fail(400, { message: 'Invalid name value' });
 		}
 
+		if(nftName.length > 32){
+			return fail(400, { message: 'Name cannot be more than 32 characters' });
+		}
+
 		if (!imgFile || !/(\jpg|\jpeg|\gif|\mp4)$/i.exec(imgFile.type)) {
 			return fail(400, { message: 'Image is required & only JPG/JPEG/GIF allowed' });
 		}
