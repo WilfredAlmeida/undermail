@@ -5,7 +5,7 @@
 	const featureCards = [
 		{
 			id: 0,
-			title: 'All you need is Images',
+			title: 'All you need is Images ',
 			subitile:
 				'Just upload your images and enter your addresses and the NFTs are delivered in real-time'
 		},
