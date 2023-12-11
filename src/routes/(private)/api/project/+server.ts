@@ -65,7 +65,7 @@ export const POST = async ({ request, locals, url }) => {
 	const userIdInDb = data![0].id;
 	const credits = data![0].credits
 
-	if(credits < 7){
+	if(credits < 2500){
 		return new Response(
 			JSON.stringify({
 				status: 'INSUFFICIENT_CREDITS',
@@ -194,7 +194,7 @@ try{
 		// console.log(p1.status);
 	}
 }catch(e){}
-	const d2 = await supabase.rpc("decrement_credits",{useremail: email, tosubtract: 7})
+	const d2 = await supabase.rpc("decrement_credits",{useremail: email, tosubtract: 2500})
 	console.log(JSON.stringify(d2));
 	
 
